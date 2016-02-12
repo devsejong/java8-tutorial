@@ -17,7 +17,7 @@ public class Tutorial02 {
         }
     }
 
-    class AppleHeavyColorPredicate implements ApplePredicate{
+    class AppleColorPredicate implements ApplePredicate{
         @Override
         public boolean test(Apple apple) {
             return "green".equals(apple.getColor());
@@ -26,7 +26,7 @@ public class Tutorial02 {
 
 
     //2.2.1. 녹색 사과만 필터링 하기.
-    public List<Apple> filterApples(List<Apple> inventory, ApplePredicate p) {
+    List<Apple> filterApples(List<Apple> inventory, ApplePredicate p) {
         List<Apple> result = new ArrayList<>();
         for (Apple apple : inventory) {
             if (p.test(apple)) {
@@ -41,7 +41,7 @@ public class Tutorial02 {
         Tutorial02 tutorial02 = new Tutorial02();
         List<Apple> inventory = new ArrayList<>();
 
-        filterApples(inventory, new AppleHeavyColorPredicate());
+        filterApples(inventory, new AppleColorPredicate());
     }
 }
 

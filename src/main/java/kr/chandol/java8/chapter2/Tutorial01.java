@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tutorial01 {
+
+
     //2.1.1. 녹색 사과만 필터링 하기.
+
     public List<Apple> filterGreenApples(List<Apple> inventory) {
         List<Apple> result = new ArrayList<>();
         for (Apple apple : inventory) {
@@ -18,7 +21,7 @@ public class Tutorial01 {
     }
 
     //2.1.2. 색을 파라미터화 하기
-    public List<Apple> filterApplesByColor(List<Apple> inventory, String color) {
+    List<Apple> filterApplesByColor(List<Apple> inventory, String color) {
         List<Apple> result = new ArrayList<>();
         for (Apple apple : inventory) {
             if (apple.getColor().equals(color)) {
@@ -29,7 +32,8 @@ public class Tutorial01 {
         return result;
     }
 
-    public List<Apple> filterApplesByWeight(List<Apple> inventory, int weight) {
+
+    List<Apple> filterApplesByWeight(List<Apple> inventory, int weight) {
         List<Apple> result = new ArrayList<>();
         for (Apple apple : inventory) {
             if (apple.getWeight() > weight) {
@@ -41,10 +45,13 @@ public class Tutorial01 {
     }
 
     //2.1.3. 가능한 모든 속성으로 필터링
-    public List<Apple> filterApples(List<Apple> inventory, String color, int weight, boolean flag) {
+    public List<Apple> filterApples(
+            List<Apple> inventory, String color, int weight, boolean flag
+    ) {
         List<Apple> result = new ArrayList<>();
         for (Apple apple : inventory) {
-            if ((flag && apple.getColor().equals(color)) || (!flag && apple.getWeight() > weight)) {
+            if ((flag && apple.getColor().equals(color))
+                    || (!flag && apple.getWeight() > weight)) {
                 result.add(apple);
             }
         }

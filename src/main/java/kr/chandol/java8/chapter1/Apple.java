@@ -1,13 +1,13 @@
 package kr.chandol.java8.chapter1;
 
 public class Apple {
-    private String weight;
+    private int weight;
 
-    public String getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 }
