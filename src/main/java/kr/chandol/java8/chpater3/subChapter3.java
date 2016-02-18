@@ -12,6 +12,29 @@ public class subChapter3 {
         String process(BufferedReader b) throws IOException;
     }
 
+    private void doSomething() {
+    }
+
+    void legacyProcessFile() {
+
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader("data.txt"));
+            doSomething();
+        } //
+        catch (IOException e) {
+            throw new RuntimeException("예외발생", e);
+        } //
+        finally {
+            try {
+                if (br != null) br.close();
+            } //
+            catch (IOException ignored) {
+            }
+        }
+    }
+
+
     String processFile(BufferedReaderProcess p) {
         try {
             BufferedReader br = new BufferedReader(new FileReader("data.txt"));
