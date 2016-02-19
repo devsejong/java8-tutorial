@@ -2,123 +2,39 @@ package kr.chandol.java8.chpater3;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.function.*;
+import java.util.Comparator;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class subChapter7 {
 
     @Test
     public void test() {
 
+        Function<Integer, Long> function1 = (Integer a) -> a.longValue();
+        Function<Integer, Long> function2 = Integer::longValue;
 
-        //Predicate
-        Predicate<Apple> predicate1 = new Predicate<Apple>() {
-            @Override
-            public boolean test(Apple apple) {
-                return apple.getColor().equals("green");
-            }
-        };
-        Predicate<Apple> predicate2 = apple -> apple.getColor().equals("green");
+        Comparator<Integer> comparator1 = (o1, o2) -> o1.compareTo(o2);
+        Comparator<Integer> comparator2 = Integer::compareTo;
 
-        //BiPredicate
-        BiPredicate<Apple, Banana> biPredicate = (a, b) -> {
-            return a.getWeight() > b.getWeight();
-        };
+        //this 사용하기
+        Consumer<String> supplier1 = this::test2;
+        Consumer<String> supplier2 = System.out::println;
 
-        //Consumer
-        Consumer<Apple> consumer1 = new Consumer<Apple>() {
-            @Override
-            public void accept(Apple apple) {
-                System.out.println(apple);
-            }
-        };
+        //new를 메서드 레퍼런스로 사용하기
 
-        Consumer<Apple> consumer2 = System.out::println;
-
-        //BiConsumer
-        BiConsumer<Apple, Banana> biConsumer
-                = (a, b) -> System.out.println(a.toString() + b.toString());
-
-
-        //Supplier
-        Supplier<Apple> supplier1 = new Supplier<Apple>() {
+        Supplier<Apple> a = new Supplier<Apple>() {
             @Override
             public Apple get() {
                 return new Apple();
             }
         };
-
-        Supplier<Apple> supplier2 = Apple::new;
-
-
-        //Function
-        Function<Apple, Integer> function1 = new Function<Apple, Integer>() {
-            @Override
-            public Integer apply(Apple apple) {
-                return apple.getWeight();
-            }
-        };
-
-        Function<Apple, Integer> function2 = Apple::getWeight;
-
-        //BiFunction
-        BiFunction<Apple, Banana, Integer> biFunction1 = new BiFunction<Apple, Banana, Integer>() {
-            @Override
-            public Integer apply(Apple apple, Banana banana) {
-                return apple.getWeight() + banana.getWeight();
-            }
-        };
-
-        BiFunction<Apple, Banana, Integer> biFunction2
-                = (apple, banana) -> apple.getWeight() + banana.getWeight();
-
-        //UnaryOperator
-        UnaryOperator<Apple> unaryOperator = (apple)->{
-            apple.setWeight(100);
-            return apple;
-        };
-
-        //BinaryOperator
-        BinaryOperator<Apple> binaryOperator = (a1, a2) -> {
-            Apple apple = new Apple();
-            apple.setWeight(a1.getWeight() + a2.getWeight());
-            return apple;
-        };
+        Supplier<Apple> b = () -> new Apple();
+        Supplier<Apple> c = Apple::new;
     }
 
-    //약 140ms 소요
-    @Test
-    public void wrapper_performanceTest(){
-        Integer[] integers = new Integer[1000000];
-        for(int i=0;i<1000000;i++){
-            integers[i] = i;
-        }
-
-        long start = System.currentTimeMillis();
-        Arrays.stream(integers).reduce(0, (prev, curr) -> prev + curr);
-        Arrays.stream(integers).reduce(0, (prev, curr) -> prev + curr);
-        Arrays.stream(integers).reduce(0, (prev, curr) -> prev + curr);
-        Arrays.stream(integers).reduce(0, (prev, curr) -> prev + curr);
-        Arrays.stream(integers).reduce(0, (prev, curr) -> prev + curr);
-
-        System.out.println(System.currentTimeMillis() - start);
-    }
-
-    //약 100ms 소요
-    @Test
-    public void primitive_performanceTest(){
-        int[] ints = new int[1000000];
-        for(int i=0;i<1000000;i++){
-            ints[i] = i;
-        }
-
-        long start = System.currentTimeMillis();
-        Arrays.stream(ints).reduce(0, (prev, curr) -> prev + curr);
-        Arrays.stream(ints).reduce(0, (prev, curr) -> prev + curr);
-        Arrays.stream(ints).reduce(0, (prev, curr) -> prev + curr);
-        Arrays.stream(ints).reduce(0, (prev, curr) -> prev + curr);
-        Arrays.stream(ints).reduce(0, (prev, curr) -> prev + curr);
-
-        System.out.println(System.currentTimeMillis() - start);
+    public void test2(String a) {
+        System.out.println("test");
     }
 }

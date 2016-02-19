@@ -51,18 +51,25 @@ public class subChapter8 {
 
     @Test
     public void Predicate조합() {
-// Predicate 선언하기.
-Predicate<Apple> redApple = (a) -> a.getColor().equals("red");
 
-// predicate 뒤집기.
-Predicate<Apple> notRedApple = redApple.negate();
+        // Predicate 선언하기.
+        Predicate<Apple> redApple
+                = (a) -> a.getColor().equals("red");
 
-// red & heavy
-Predicate<Apple> redAndHeavyApple = redApple.and(a -> a.getWeight() > 150);
+        // predicate 뒤집기.
+        Predicate<Apple> notRedApple
+                = redApple.negate();
+
+        // red & heavy
+        Predicate<Apple> redAndHeavyApple
+                = redApple.and(a -> a.getWeight() > 150);
+
+
     }
 
     @Test
     public void Function조합() {
+
         // Function 조합
         Function<Integer, Integer> f = x -> x + 1;
         Function<Integer, Integer> g = x -> x * 2;
