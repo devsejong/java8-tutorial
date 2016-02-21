@@ -8,9 +8,6 @@ import java.io.IOException;
 
 public class subChapter3 {
 
-    interface BufferedReaderProcess {
-        String process(BufferedReader b) throws IOException;
-    }
 
     private void doSomething() {
     }
@@ -31,9 +28,14 @@ public class subChapter3 {
             } //
             catch (IOException ignored) {
             }
-        }
+        }`
     }
 
+
+    @FunctionalInterface
+    interface BufferedReaderProcess {
+        String process(BufferedReader b) throws IOException;
+    }
 
     String processFile(BufferedReaderProcess p) {
         try {
@@ -46,8 +48,10 @@ public class subChapter3 {
 
     @Test
     public void runner() {
-        String oneLine = processFile((BufferedReader br) -> br.readLine());
-        String twoLines = processFile((BufferedReader br) -> br.readLine() + br.readLine());
+        String oneLine
+                = processFile((br) -> br.readLine());
+        String twoLines
+                = processFile((br) -> br.readLine() + br.readLine());
     }
 
 }
