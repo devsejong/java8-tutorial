@@ -1,4 +1,4 @@
-package kr.chandol.java8.chpater4;
+package kr.chandol.java8.chapter4;
 
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static kr.chandol.java8.chpater4.Dish.menu;
+import static kr.chandol.java8.chapter4.Dish.menu;
 
 public class subChapter3 {
 

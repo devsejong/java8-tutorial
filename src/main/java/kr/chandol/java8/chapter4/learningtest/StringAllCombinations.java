@@ -1,4 +1,4 @@
-package kr.chandol.java8.chpater4.learningtest;
+package kr.chandol.java8.chapter4.learningtest;
 
 import java.math.BigInteger;
 import java.util.Date;

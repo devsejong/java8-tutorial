@@ -1,13 +1,13 @@
-package kr.chandol.java8.chpater3;
+package kr.chandol.java8.chapter3;
 
-public class Banana {
+public class Apple {
     private int weight;
     private String color;
     private String country;
 
-    public Banana(){}
+    public Apple(){}
 
-    public Banana(int weight){
+    public Apple(int weight){
         this.weight = weight;
     }
 

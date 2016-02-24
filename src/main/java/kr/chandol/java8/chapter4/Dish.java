@@ -1,4 +1,4 @@
-package kr.chandol.java8.chpater4;
+package kr.chandol.java8.chapter4;
 
 import java.util.Arrays;
 import java.util.List;

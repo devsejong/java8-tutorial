@@ -1,4 +1,4 @@
-package kr.chandol.java8.chpater3;
+package kr.chandol.java8.chapter3;
 
 import org.junit.Test;
 
