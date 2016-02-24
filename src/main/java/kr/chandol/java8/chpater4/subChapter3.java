@@ -26,13 +26,13 @@ public class subChapter3 {
 
     @Test
     public void 외부반복과내부반복() {
-List<String> names = new ArrayList<>();
-for(Dish d : menu){
-    names.add(d.getName());
-}
+        List<String> names = new ArrayList<>();
+        for (Dish d : menu) {
+            names.add(d.getName());
+        }
 
-List<String> namesWithStream
-        = menu.stream().map(Dish::getName).collect(toList());
+        List<String> namesWithStream
+                = menu.stream().map(Dish::getName).collect(toList());
     }
 
 }
