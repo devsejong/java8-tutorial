@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<title>자바8인액션4장</title>
+
+		<meta name="author" content="SejongPark">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="reveal/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+        <script src="reveal/lib/js/html5shiv.js"></script>
+        <![endif]-->
+	</head>
+
+	<body>
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>자바8인액션</h1>
+					<h3>4장 - 스트림소개</h3>
+					<p>
+						<small>Created by <a href="http://chandol.net">SejongPark</a> / <a href="https://github.com/devsejong">github</a></small>
+					</p>
+				</section>
+
+				<section>
+					<h2>자바 7이하의 컬렉션 처리</h2>
+                    <br>
+					<pre><code class="hljs" data-trim>
+List&lt;Dish&gt; lowCaloricDishes = new ArrayList&lt;&gt;();
+
+// 칼로리 순으로 정렬한다
+Collections.sort(lowCaloricDishes, new Comparator&lt;Dish&gt;() {
+    @Override
+    public int compare(Dish o1, Dish o2) {
+        return Integer.compare(o1.getCalories(), o2.getCalories());
+    }
+});
+
+// 요리 이름만 가지고 온다.
+List&lt;String&gt; lowCaloricDishesName = new ArrayList&lt;&gt;();
+for(Dish d : lowCaloricDishes){
+    lowCaloricDishesName.add(d.getName());
+}
+					</code></pre>
+
+				</section>
+                <section>
+                    <section>
+                        <h2>자바8 컬렉션 처리</h2>
+                        <br>
+                        <pre><code class="hljs" data-trim>
+    List&lt;String&gt; dishs = menu.stream()
+                    .filter(d -> d.getCalories() < 400)
+                    .sorted(comparing(Dish::getCalories))
+                    .map(Dish::getName)
+                    .collect(toList());
+                        </code></pre>
+                    </section>
+                    <section>
+                        <img data-src="asset/chapter4/stream.png">
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>스트림 API의 장점</h2>
+                        <br>
+                        <ul style="text-align: left;">
+                            <li>선언형 프로그래밍</li>
+                            <li>조립할 수 있음</li>
+                            <li>병렬화</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>선언형 프로그래밍</h2>
+                        <br>
+                        <div>
+                            선언형 메서드로 특정 동작의 수행을 지정
+                        </div>
+                        <pre><code class="hljs" data-trim>
+SELECT *
+  FROM Products
+ WHERE (Price BETWEEN 10 AND 20)
+   AND NOT CategoryID IN (1,2,3);
+                        </code></pre>
+
+                        <aside class="notes">
+                            루프와 if조건문등 제어블록을 사용해서
+                            어떻게 동작을 구현할지 지정할 필요 없이
+                            '저칼로리의 요리만 선택하라'같은 동작의 수행을 지정할 수 있다.
+                            앞서 이야기했었던 동작 파라미터화를 사용한다면 변화하는 요구사항에 더 쉽게 대응할 수 있다.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>조립할 수 있음</h2>
+                        <br>
+                        <div>
+                            자바에서는 다양한 기본함수 제공<br>
+                            위의 식에서 limit(3)을 추가할 경우<br>
+                            결과 3개만 출력
+                        </div>
+                        <aside class="notes">
+                            루프와 if조건문등 제어블록을 사용해서
+                            어떻게 동작을 구현할지 지정할 필요 없이
+                            '저칼로리의 요리만 선택하라'같은 동작의 수행을 지정할 수 있다.
+                            앞서 이야기했었던 동작 파라미터화를 사용한다면 변화하는 요구사항에 더 쉽게 대응할 수 있다.
+                        </aside><aside class="notes">
+                        자바에서는 스트림을 제어할 수 있는 다양한 기본함수들을 제공하고 있다. 이를 조립함으로써 다양한 기능을 유연하게 변경할 수 있다. 예를 들어 위의 식에서 상위 3개의 값만 가져와야 할 경우 `limit(3)`를 끼워넣기만 하면 된다.자바에서는 스트림을 제어할 수 있는 다양한 기본함수들을 제공하고 있다. 이를 조립함으로써 다양한 기능을 유연하게 변경할 수 있다. 예를 들어 위의 식에서 상위 3개의 값만 가져와야 할 경우 `limit(3)`를 끼워넣기만 하면 된다.
+                    </aside>
+                    </section>
+                    <section>
+                        <h2>병렬화</h2>
+                        <br>
+                        <div>
+                            stream을 <b>parallelStream()</b>으로만 변경하면 <br>
+                            멀티스레드를 활용한 컬렉션 조작을 할 수 있다.
+                        </div>
+                        <pre><code class="hljs" data-trim>
+        List&lt;String&gt; dishs = menu.parallelStream()
+                .filter(d -> d.getCalories() < 400)
+                .sorted(comparing(Dish::getCalories))
+                .collect(toList());
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>스트림(stream)이란</h2>
+
+                        <br>
+                        <div>
+                            <b>데이터 처리연산</b>을 지원하는 <b>소스</b>에서 추출된 <b>연속된 요소</b>
+                        </div>
+                    </section>
+                    <section>
+                        <h2>연속된 요소</h2>
+                        <br>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">컬렉션</th>
+                                <th style="text-align: center">스트림</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="2" style="text-align: center">
+                                    연속된 값들의 집합</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">값을 저장하는데 집중</td>
+                                <td style="text-align: center">표현 계산식에 집중</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <aside class="notes" class="notes">
+                            컬렉션과 마찬가지로 스트림은 특정 요소 형식으로
+                            이루어진 연속된 값 집합의 인터페이스를 제공한다.
+                            컬렉션의 경우 자료를 어떻게 저장할 것인가에 집중한다면
+                            스트림의 경우 map, filter와 같은 표현 계산식이 주를 이룬다.
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>소스</h2>
+                        <br>
+                        <div>
+                            스트림은 컬렉션, 배열, I/O 자원등의 데이터 제공<br>
+                            소스로부터 데이터를 소비한다.
+                        </div>
+                    </section>
+                    <section>
+                        <h2>데이터 처리 연산</h2>
+                        <br>
+                        <div>
+                            스트림은 filter, map, reduce, find, match등의 함수가 제공.<br>
+                            스트림연산은 순차적으로 또는 병렬로 실행
+                        </div>
+                        <aside class="notes">
+                            스트림은 함수형 프로그래밍 언어에서 일반적으로 지원하는 연산과 데이터베이스와 비슷한 연산을 지원한다. filter, map, reduce, find, match등으로 데이터를 조작할 수 있다. 스트림연산은 순차적으로 또는 병렬로 실행할 수 있다.
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>파이프라이닝</h2>
+                        <br>
+                        <div>
+                            다른 스트림연산끼리 결합 커다란 파이프라인 구성가능<br>
+                            Lazyness, Short-circuting 같은 최적화 가능
+                        </div>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>스트림과 컬렉션</h2>
+                        <br>
+                        <ul>
+                            <li>연속된 요소형식의 값을 저장하는 자료구조의 인터페이스</li>
+                            <ul>
+                                <li>순차적으로 값에 접근</li>
+                            </ul>
+                            <li>요청할때만 요소를 계산하는 자료구조</li>
+                        </ul>
+                        <aside class="notes">
+                            기존 컬렉션과는 달리 스트림은 연속된 요소형식의 값을 저장하는 자료구조의 인터페이스를 제공한다. 여기서 연속된이라는 표현은 순차적으로 값에 접근한다는 것을 의미한다.
+                            <br>
+                            컬렉션은 현재 자료구조가 포함되는 모든 값을 메모리에 저장하는 자료구조이다. 반면 스트림은 이론적으로 요청할때만 요소를 계산하는 고정된 자료구조이다. 다시 이야기하자면 사용자가 데이터를 요청할때에만 값을 계산하는 게으른 컬렉션이라고 생각하면 좋다.
+                        </aside>
+                    </section>
+                    <section>
+                        <h3>딱 한번만 탐색할 수 있다</h3>
+                        <div>
+                            한번 탐색된 요소를 다시 탐색하기 위해서는 초기 데이터소스에서 새로운 스트림을 만들어야 한다.
+                        </div>
+
+                        <pre><code class="hljs" data-trim>
+List&lt;String&gt; title = Arrays.asList("Java8", "In", "Action");
+
+Stream&lt;String&gt; s = title.stream();
+//title의 각 단어가 출력된다.
+s.forEach(System.out::println);
+//IllegalStateException이 발생된다. 스트림이 이미 소비되었거나 닫혔기 때문이다.
+s.forEach(System.out::println);
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>외부반복과 내부 반복</h3>
+                        <br>
+                        <p>
+                            어떤작업이 수행할지만 지정하면 <b>연산이 알아서 처리</b>된다.
+                        </p>
+                        <pre><code class="hljs" data-trim>
+List&lt;String&gt; names = new ArrayList&lt;&gt;();
+for(Dish d : menu){
+    names.add(d.getName());
+}
+
+List&lt;String&gt; namesWithStream = menu.stream()
+            .map(Dish::getName)
+            .collect(toList());
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>스트림 연산</h2>
+                        <pre><code class="hljs" data-trim>
+List&lt;String&gt; lowCaloricDishesName = menu
+        .parallelStream()
+        .filter(d -&gt; d.getCalories() &lt; 400)
+        .sorted(comparing(Dish::getCalories))
+        .map(Dish::getName)
+        .collect(toList());
+                        </code></pre>
+                        <ul>
+                            <li>filter, map, limit는 파이프라인을 형성</li>
+                            <li>collect는 파이프라인을 실행한 다음에 닫는다.</li>
+                        </ul>
+                    </section>
+
+
+                    <section>
+                        <h2>스트림 연산</h2>
+                        <pre><code class="hljs" data-trim>
+List&lt;String&gt; lowCaloricDishesName = menu
+        .parallelStream()
+        .filter(d -&gt; d.getCalories() &lt; 400)
+        .sorted(comparing(Dish::getCalories))
+        .map(Dish::getName)
+        .collect(toList());
+                        </code></pre>
+                        <ul>
+                            <li>연결할 수 있는 스트림 연산을 *중간연산*</li>
+                            <li>스트림을 닫는 연산을 *최종 연산*</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>스트림 연산</h2>
+
+                        <pre><code class="hljs" data-trim>
+                            menu.stream().forEach(System.out::println);
+                        </code></pre>
+
+                        <ul>
+                            <li>최종연산은 스트림 파이프라인에서 결과를 도출</li>
+                            <li>List, Integer, void 등 스트림 이외의 결과가 반환</li>
+                        </ul>
+                    </section>
+                </section>
+
+				<section style="text-align: left;">
+					<h1>THE END</h1>
+					<p>
+						- <a href="https://github.com/devsejong/java8-tutorial/tree/master/src/main/java/kr/chandol/java8/chapter4">Github 예제코드</a> <br>
+						- <a href="https://github.com/devsejong/TIL/blob/master/java/%EC%9E%90%EB%B0%948%EC%9D%B8%EC%95%A1%EC%85%98/04%EC%9E%A5-%EC%8A%A4%ED%8A%B8%EB%A6%BC%20%EC%86%8C%EA%B0%9C.adoc">4장 요약본</a>
+					</p>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="reveal/lib/js/head.min.js"></script>
+		<script src="reveal/js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal/plugin/zoom-js/zoom.js', async: true },
+					{ src: 'reveal/plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
