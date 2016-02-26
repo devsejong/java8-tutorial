@@ -13,7 +13,10 @@ public class subChapter4 {
 
     @Test
     public void reduce() {
-        Integer product = numbers.stream().reduce(1, (a, b) -> a * b);
+        List<Integer> numbers = Arrays.asList(6, 2, 1, 4, 2, 6);
+        numbers.stream().sorted(Integer::compareTo);
+        Integer product = numbers
+                .stream().reduce(1, (a, b) -> a * b);
         Optional<Integer> optionalProduct = numbers.stream().reduce((a, b) -> a * b);
     }
 

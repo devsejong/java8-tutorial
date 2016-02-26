@@ -19,9 +19,8 @@ public class subChapter1 {
 
     @Test
     public void distinct() {
-        List<Integer> numbers = Arrays.asList(1, 2, 1, 3, 3, 2, 4);
+        List<Integer> numbers = Arrays.asList(1, 2, 1, 3, 3);
         numbers.stream()
-                .filter(i -> i % 2 == 0)
                 .distinct()
                 .forEach(System.out::println);
     }
@@ -29,13 +28,12 @@ public class subChapter1 {
     @Test
     public void list() {
         menu.stream()
-                .filter(d -> d.getCalories() > 300)
                 .limit(3)
                 .collect(toList());
     }
 
     @Test
-    public void skip(){
+    public void skip() {
         menu.stream()
                 .filter(d -> d.getCalories() > 300)
                 .skip(2)

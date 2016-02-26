@@ -10,27 +10,28 @@ import static kr.chandol.java8.chapter5.Dish.menu;
 public class subChapter3 {
     @Test
     public void anyMatch() {
-        menu.stream().anyMatch(Dish::isVegetarian);
-
+        menu.stream()
+                .filter(d -> d.getCalories() < 100)
+                .anyMatch(Dish::isVegetarian);
     }
 
     @Test
-    public void allMatch(){
+    public void allMatch() {
         menu.stream().allMatch(d -> d.getCalories() < 1000);
     }
 
     @Test
-    public void noneMatch(){
+    public void noneMatch() {
         menu.stream().allMatch(d -> d.getCalories() >= 1000);
     }
 
     @Test
-    public void findAny(){
+    public void findAny() {
         Optional<Dish> any = menu.stream().filter(Dish::isVegetarian).findAny();
     }
 
     @Test
-    public void findFirst(){
+    public void findFirst() {
         Optional<Dish> first = menu.stream().filter(Dish::isVegetarian).findFirst();
     }
 

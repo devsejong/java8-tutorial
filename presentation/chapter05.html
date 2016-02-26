@@ -1,92 +1,398 @@
 <!doctype html>
 <html lang="ko">
-	<head>
-		<meta charset="utf-8">
-		<title>자바8인액션 5장</title>
+<head>
+    <meta charset="utf-8">
+    <title>자바8인액션 5장</title>
 
-		<meta name="author" content="SejongPark">
+    <meta name="author" content="SejongPark">
 
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-		<link rel="stylesheet" href="reveal/css/reveal.css">
-		<link rel="stylesheet" href="reveal/css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/black.css" id="theme">
 
-		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="reveal/lib/css/zenburn.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
 
-		<!--[if lt IE 9]>
-        <script src="reveal/lib/js/html5shiv.js"></script>
-        <![endif]-->
-	</head>
+<body>
+<div class="reveal">
 
-	<body>
-		<div class="reveal">
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h1>자바8인액션</h1>
+            <h3>5장 - 스트림활용</h3>
+            <p>
+                <small>Created by <a href="http://chandol.net">SejongPark</a> /
+                    <a href="https://github.com/devsejong">github</a></small>
+            </p>
+        </section>
 
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h1>자바8인액션</h1>
-					<h3>5장 - 스트림활용</h3>
-					<p>
-						<small>Created by <a href="http://chandol.net">SejongPark</a> / <a href="https://github.com/devsejong">github</a></small>
-					</p>
-				</section>
+        <section>
+            <img height="650px" src="asset/chapter05/streamFunctions.png">
+        </section>
 
-				<section>
-                    <img src="asset/chapter05/streamFunctions.png">
-                    <pre><code class="hljs" data-trim></code></pre>
-                </section>
+        <section>
+            <section>
+                <h2>필터링과 슬라이싱</h2>
+                <br>
+                <div>일부요소를 무시하거나, 특정크기로 줄이기</div>
+            </section>
+            <section>
+                <h3>fiter</h3>
+                <div>
+                    Predicate를 인자로 받아서 참인 요소만을 반환
+                </div>
+                <pre><code class="hljs" data-trim>
+menu.stream()
+    .filter(Dish::isVegetarian)
+    .collect(toList());
+                </code></pre>
+                <img src="asset/chapter05/filter.png" height="400px">
+            </section>
+            <section>
+                <h3>distinct</h3>
+                <div>
+                    유일한 값만 반환한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+List&lt;Integer&gt; numbers = Arrays.asList(1, 1, 1, 2, 5);
+numbers.stream()
+        .distinct()
+        .forEach(System.out::println);
+                </code></pre>
+                <img src="asset/chapter05/distinct.png" height="400px">
+            </section>
 
-				<section style="text-align: left;">
-					<h1>THE END</h1>
-					<p>
-						- <a href="https://github.com/devsejong/java8-tutorial/tree/master/src/main/java/kr/chandol/java8/chapter5">Github 예제코드</a> <br>
-						- <a href="https://github.com/devsejong/TIL/blob/master/java/%EC%9E%90%EB%B0%948%EC%9D%B8%EC%95%A1%EC%85%98/04%EC%9E%A5-%EC%8A%A4%ED%8A%B8%EB%A6%BC%20%EC%86%8C%EA%B0%9C.adoc">4장 요약본</a>
-					</p>
-				</section>
+            <section>
+                <h3>limit</h3>
+                <div>
+                    지정된 숫자만큼만 반환한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+menu.stream()
+    .limit(3)
+    .collect(toList());
+                </code></pre>
+                <img src="asset/chapter05/limit.png" height="400px">
+            </section>
 
-			</div>
+            <!-- 여기부터 진행할 것 -->
+            <section>
+                <h3>skip</h3>
+                <div>
+                    지정된 숫자만큼 무시한뒤 나머지를 반환한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+menu.stream()
+    .skip(2)
+    .collect(toList());
+                </code></pre>
+                <img src="asset/chapter05/skip.png" height="400px">
+            </section>
+        </section>
 
-		</div>
+        <section>
+            <section>
+                <h2>매핑</h2>
+                <br>
+                <div>요소를 다른 값으로 변환한다.</div>
+            </section>
+            <section>
+                <h3>map</h3>
+                <div>
+                    Function&lt;T,U&gt;를 사용 T를 받은뒤 U형태로 반환한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+menu.stream()
+    .map(dish::getCalories)
+    .reduce((a, b) -> a + b);
+                </code></pre>
+                <img src="asset/chapter05/map.png" height="400px">
+            </section>
+            <section>
+                <h3>flatMap</h3>
+                <div>
+                    각 요소의 값을 분해하여 스트림으로 변환한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+                </code></pre>
+                <img src="asset/chapter05/" height="400px">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>검색과 매칭</h2>
+                <br>
+                <div>특정 속성이 데이터 집합에 있는지 여부를 검색</div>
+            </section>
+            <section>
+                <h3>anyMatch</h3>
+                <div>
+                    Predicate가 적어도 한 요소와 일치하는지 확인한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+menu.stream()
+    .filter(d -> d.getCalories() < 200)
+    .anyMatch(Dish::isVegetarian);
+                </code></pre>
+                <img src="asset/chapter05/anyMatch.png" height="400px">
+            </section>
+            <section>
+                <h3>allMatch</h3>
+                <div>
+                    Predicate가 모든 요소와 일치하는지 확인한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+menu.stream()
+    .filter(d -> d.getCalories() < 100)
+    .allMatch(Dish::isVegetarian);
+                </code></pre>
+                <img src="asset/chapter05/allMatch.png" height="400px">
+            </section>
+            <section>
+                <h3>noneMatch</h3>
+                <div>
+                    Predicate가 모든 요소와 불일치하는지 확인한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+menu.stream()
+    .filter(d -> d.getCalories() > 200)
+    .allMatch(Dish::isVegetarian);
+                </code></pre>
+                <img src="asset/chapter05/noneMatch.png" height="400px">
+            </section>
+            <section>
+                <h3>findAny</h3>
+                <div>
+                    현재 스트림에서 임의의 요소를 반환한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+menu.stream()
+    .filter(d -> d.getCalories() < 200)
+    .findAny(Dish::isVegetarian);
+                </code></pre>
+                <img src="asset/chapter05/findAny.png" height="400px">
+            </section>
+            <section>
+                <h3>findFirst</h3>
+                <div>
+                    현재 스트림에서 첫번째 요소를 반환한다.
+                </div>
+                <pre><code class="hljs" data-trim>
+menu.stream()
+    .filter(d -> d.getCalories() < 200)
+    .findFirst(Dish::isVegetarian);
+                </code></pre>
+                <img src="asset/chapter05/findFirst.png" height="400px">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>리듀싱</h2>
+                <br>
+                <div>모든 스트림 요소를 처리해서 값으로 도출</div>
+            </section>
+            <section>
+                <h3>reduce [연산]</h3>
+                <div>
+                    reduce(init, operator) 또는 reduce(operator) 형태로 사용
+                </div>
+                <pre><code class="hljs" data-trim>
+List&lt;&Integer&gt; numbers = Arrays.asList(6, 2, 1, 4, 2);
+Optinal&lt;Integer&gt; sum = numbers
+        .stream().reduce((a, b) -> a * b);
+                </code></pre>
+                <img src="asset/chapter05/reduce1.png" height="400px">
+            </section>
+            <section>
+                <h3>reduce [최댓값, 최솟값]</h3>
+                <pre><code class="hljs" data-trim>
+List&lt;&Integer&gt; numbers = Arrays.asList(3, 2, 6, 4, 2);
+Integer max = numbers
+        .stream().reduce(Integer::max);
+                </code></pre>
+                <img src="asset/chapter05/max.png" height="400px">
+            </section>
+        </section>
+        <section>
+            <h3>sort</h3>
+            <div>
+                Comparator를 사용. 스트림의 요소를 정렬
+            </div>
+            <pre><code class="hljs" data-trim>
+List&lt;&Integer&gt; numbers = Arrays.asList(1, 3, 1, 2, 5);
+Integer product = numbers.stream()
+        .sorted(Integer::compareTo)
+        .collect(toList());
+            </code></pre>
+            <img src="asset/chapter05/sorted.png" height="400px">
+        </section>
+        <section>
+            <h3>forEach</h3>
+            <pre><code class="hljs" data-trim>
+List&lt;Integer&gt; numbers = Arrays.asList(1, 1, 1, 2, 5);
+numbers.stream()
+        .distinct()
+        .forEach(System.out::println);
+            </code></pre>
+            <div>
+                Consumer를 사용 각각 요소에서 작업을 실행.
+            </div>
+            <pre><code class="hljs" data-trim>
+            </code></pre>
+            <img src="asset/chapter05/forEach.png" height="400px">
+        </section>
 
-		<script src="reveal/lib/js/head.min.js"></script>
-		<script src="reveal/js/reveal.js"></script>
+        <section>
+            <section>
+                <h2>기본형특화 스트림</h2>
+                <br>
+                <div>박싱 비용을 피할 수 있는 기본형 스트림 세가지를 제공한다.</div>
+                <ul>
+                    <li>IntStream</li>
+                    <li>DoubleStream</li>
+                    <li>LongStream</li>
+                </ul>
+            </section>
+            <section>
+                <h2>객체 스트림으로 복원</h2>
+                <div>
+                    <cite><b>boxed</b></cite>를 호출하여 래퍼타입으로 변환할 수 있다.
+                </div>
+                <pre><code class="hljs" data-trim>
+IntStream intStream = menu.stream().mapToInt(Dish::getCalories);
+Stream&lt;Integer&gt; stream = intStream.boxed();
+                </code></pre>
+            </section>
+            <section>
+                <h2>숫자범위</h2>
+                <div>
+                    특정범위의 숫자를 쉽게 생성할 수 있다.
+                </div>
+                <pre><code class="hljs" data-trim>
+IntStream evenNumbers = IntStream
+        .rangeClosed(1, 100)
+        .filter(n -> n % 2 == 0);
+                </code></pre>
+            </section>
 
-		<script>
+            <section>
+                <h2>값, 배열로 스트림 만들기</h2>
+                <pre><code class="hljs" data-trim>
+Stream&lt;String&gt; stream = Stream.of("Java8", "Lambdas", "In", "Action");
+Stream&lt;Integer&gt; emptyStream = Stream.empty();
 
-			// Full list of configuration options available at:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
+int[] numbers = {2,3,5,7,11};
+int sum = Arrays.stream(numbers).sum();
+                </code></pre>
+            </section>
 
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
+            <section>
+                <h2>함수로 무한 스트림 만들기 - iterator</h2>
+                <div>
+                    iterator메서드는 초기값을 기준으로 람다로 인수를 받아서 새로운 값을 끊임없이 생산가능
+                </div>
+                <pre><code class="hljs" data-trim>
+Stream.iterate(0, n -> n + 2)
+        .limit(10)
+        .forEach(System.out::println);
+                </code></pre>
+            </section>
 
-				// Optional reveal.js plugins
-				dependencies: [
-					{ src: 'reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'reveal/plugin/zoom-js/zoom.js', async: true },
-					{ src: 'reveal/plugin/notes/notes.js', async: true }
-				]
-			});
+            <section>
+                <h2>함수로 무한 스트림 만들기 - generator</h2>
+                <div>
+                    generator는 Supplier&lt;T&gt;를 인수로 받아서 새로운 값을 생성
+                </div>
+                <pre><code class="hljs" data-trim>
+Stream.generate(Math::random)
+        .limit(10)
+        .forEach(System.out::println);
+                </code></pre>
+            </section>
+        </section>
 
-		</script>
 
-	</body>
+        <section style="text-align: left;">
+            <h1>THE END</h1>
+            <p>
+                - <a href="https://github.com/devsejong/java8-tutorial/tree/master/src/main/java/kr/chandol/java8/chapter5">Github
+                예제코드</a> <br>
+            </p>
+        </section>
+    </div>
+
+</div>
+<script type="text/plain">
+            <pre><code class="hljs" data-trim></code></pre>
+
+</script>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'reveal/plugin/markdown/marked.js',
+                condition: function () {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            },
+            {
+                src: 'reveal/plugin/markdown/markdown.js',
+                condition: function () {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            },
+            {
+                src: 'reveal/plugin/highlight/highlight.js',
+                async: true,
+                callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            },
+            {src: 'reveal/plugin/zoom-js/zoom.js', async: true},
+            {src: 'reveal/plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
 </html>
