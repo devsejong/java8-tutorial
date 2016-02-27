@@ -70,15 +70,15 @@ for(Dish d : lowCaloricDishes){
                         <h2>자바8 컬렉션 처리</h2>
                         <br>
                         <pre><code class="hljs" data-trim>
-    List&lt;String&gt; dishs = menu.stream()
-                    .filter(d -> d.getCalories() < 400)
-                    .sorted(comparing(Dish::getCalories))
-                    .map(Dish::getName)
-                    .collect(toList());
+List&lt;String&gt; dishs = menu.stream()
+                .filter(d -> d.getCalories() < 400)
+                .sorted(comparing(Dish::getCalories))
+                .map(Dish::getName)
+                .collect(toList());
                         </code></pre>
                     </section>
                     <section>
-                        <img data-src="asset/chapter4/stream.png">
+                        <img data-src="asset/chapter04/stream.png">
                     </section>
                 </section>
                 <section>
@@ -231,7 +231,7 @@ SELECT *
                     <section>
                         <h3>딱 한번만 탐색할 수 있다</h3>
                         <div>
-                            한번 탐색된 요소를 다시 탐색하기 위해서는 초기 데이터소스에서 새로운 스트림을 만들어야 한다.
+                            한번 탐색된 요소를 다시 탐색하기 위해서는<br> 초기 데이터소스에서 새로운 스트림을 만들어야 한다.
                         </div>
 
                         <pre><code class="hljs" data-trim>
@@ -283,17 +283,10 @@ List&lt;String&gt; lowCaloricDishesName = menu
 
                     <section>
                         <h2>스트림 연산</h2>
-                        <pre><code class="hljs" data-trim>
-List&lt;String&gt; lowCaloricDishesName = menu
-        .parallelStream()
-        .filter(d -&gt; d.getCalories() &lt; 400)
-        .sorted(comparing(Dish::getCalories))
-        .map(Dish::getName)
-        .collect(toList());
-                        </code></pre>
+                        <img data-src="asset/chapter04/streamOperator.png">
                         <ul>
-                            <li>연결할 수 있는 스트림 연산을 *중간연산*</li>
-                            <li>스트림을 닫는 연산을 *최종 연산*</li>
+                            <li>연결할 수 있는 스트림 연산을 <b>중간연산</b></li>
+                            <li>스트림을 닫는 연산을 <b>최종 연산</b></li>
                         </ul>
                     </section>
 

@@ -118,7 +118,7 @@ menu.stream()
             <section>
                 <h3>map</h3>
                 <div>
-                    Function&lt;T,U&gt;를 사용 T를 받은뒤 U형태로 반환한다.
+                    스트림의 T객체를 U로 변환. 파라미터로 Function&lt;T,U&gt;를 사용
                 </div>
                 <pre><code class="hljs" data-trim>
 menu.stream()
@@ -132,9 +132,7 @@ menu.stream()
                 <div>
                     각 요소의 값을 분해하여 스트림으로 변환한다.
                 </div>
-                <pre><code class="hljs" data-trim>
-                </code></pre>
-                <img src="asset/chapter05/" height="400px">
+                <img src="asset/chapter05/flatmap.jpg" height="400px">
             </section>
         </section>
         <section>
@@ -216,16 +214,16 @@ menu.stream()
                     reduce(init, operator) 또는 reduce(operator) 형태로 사용
                 </div>
                 <pre><code class="hljs" data-trim>
-List&lt;&Integer&gt; numbers = Arrays.asList(6, 2, 1, 4, 2);
+List&lt;Integer&gt; numbers = Arrays.asList(6, 2, 1, 4, 2);
 Optinal&lt;Integer&gt; sum = numbers
-        .stream().reduce((a, b) -> a * b);
+        .stream().reduce((a, b) -> a + b);
                 </code></pre>
                 <img src="asset/chapter05/reduce1.png" height="400px">
             </section>
             <section>
                 <h3>reduce [최댓값, 최솟값]</h3>
                 <pre><code class="hljs" data-trim>
-List&lt;&Integer&gt; numbers = Arrays.asList(3, 2, 6, 4, 2);
+List&lt;Integer&gt; numbers = Arrays.asList(3, 2, 6, 4, 2);
 Integer max = numbers
         .stream().reduce(Integer::max);
                 </code></pre>
@@ -238,7 +236,7 @@ Integer max = numbers
                 Comparator를 사용. 스트림의 요소를 정렬
             </div>
             <pre><code class="hljs" data-trim>
-List&lt;&Integer&gt; numbers = Arrays.asList(1, 3, 1, 2, 5);
+List&lt;Integer&gt; numbers = Arrays.asList(1, 3, 1, 2, 5);
 Integer product = numbers.stream()
         .sorted(Integer::compareTo)
         .collect(toList());
@@ -247,16 +245,14 @@ Integer product = numbers.stream()
         </section>
         <section>
             <h3>forEach</h3>
+            <div>
+                Consumer를 사용 각각 요소에서 작업을 실행.
+            </div>
             <pre><code class="hljs" data-trim>
 List&lt;Integer&gt; numbers = Arrays.asList(1, 1, 1, 2, 5);
 numbers.stream()
         .distinct()
         .forEach(System.out::println);
-            </code></pre>
-            <div>
-                Consumer를 사용 각각 요소에서 작업을 실행.
-            </div>
-            <pre><code class="hljs" data-trim>
             </code></pre>
             <img src="asset/chapter05/forEach.png" height="400px">
         </section>
