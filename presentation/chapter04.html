@@ -44,9 +44,11 @@
 				</section>
 
 				<section>
-					<h2>자바 7이하의 컬렉션 처리</h2>
-                    <br>
-					<pre><code class="hljs" data-trim>
+                    <section>
+                        <h2>자바 7이하의 컬렉션 처리</h2>
+                        <br>
+                        <div>칼로리순으로 요리이름 출력하기</div>
+                        <pre><code class="hljs" data-trim>
 List&lt;Dish&gt; lowCaloricDishes = new ArrayList&lt;&gt;();
 
 // 칼로리 순으로 정렬한다
@@ -62,8 +64,24 @@ List&lt;String&gt; lowCaloricDishesName = new ArrayList&lt;&gt;();
 for(Dish d : lowCaloricDishes){
     lowCaloricDishesName.add(d.getName());
 }
-					</code></pre>
-
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>자바 7이하의 컬렉션 처리</h2>
+                        <br>
+                        <pre><code class="hljs" data-trim>
+public final List&lt;Dish&gt; menu =
+     asList( new Dish("pork", false, 800, Dish.Type.MEAT),
+             new Dish("beef", false, 700, Dish.Type.MEAT),
+             new Dish("chicken", false, 400, Dish.Type.MEAT),
+             new Dish("french fries", true, 530, Dish.Type.OTHER),
+             new Dish("rice", true, 350, Dish.Type.OTHER),
+             new Dish("season fruit", true, 120, Dish.Type.OTHER),
+             new Dish("pizza", true, 550, Dish.Type.OTHER),
+             new Dish("prawns", false, 400, Dish.Type.FISH),
+             new Dish("salmon", false, 450, Dish.Type.FISH));
+                        </code></pre>
+                    </section>
 				</section>
                 <section>
                     <section>
@@ -74,6 +92,7 @@ List&lt;String&gt; dishs = menu.stream()
                 .filter(d -> d.getCalories() < 400)
                 .sorted(comparing(Dish::getCalories))
                 .map(Dish::getName)
+                .limit(3)
                 .collect(toList());
                         </code></pre>
                     </section>
@@ -116,18 +135,18 @@ SELECT *
                         <h2>조립할 수 있음</h2>
                         <br>
                         <div>
-                            자바에서는 다양한 기본함수 제공<br>
-                            위의 식에서 limit(3)을 추가할 경우<br>
-                            결과 3개만 출력
+                            자바에서 컬렉션을 조작하는 다양한 기본함수를 제공<br>
+                            limit(3)을 뺀다면 전체 값을 가져올 수 있음.<br>
+                            공유되는 로직에 대해서 재활용이 가능
                         </div>
                         <aside class="notes">
                             루프와 if조건문등 제어블록을 사용해서
                             어떻게 동작을 구현할지 지정할 필요 없이
                             '저칼로리의 요리만 선택하라'같은 동작의 수행을 지정할 수 있다.
                             앞서 이야기했었던 동작 파라미터화를 사용한다면 변화하는 요구사항에 더 쉽게 대응할 수 있다.
-                        </aside><aside class="notes">
-                        자바에서는 스트림을 제어할 수 있는 다양한 기본함수들을 제공하고 있다. 이를 조립함으로써 다양한 기능을 유연하게 변경할 수 있다. 예를 들어 위의 식에서 상위 3개의 값만 가져와야 할 경우 `limit(3)`를 끼워넣기만 하면 된다.자바에서는 스트림을 제어할 수 있는 다양한 기본함수들을 제공하고 있다. 이를 조립함으로써 다양한 기능을 유연하게 변경할 수 있다. 예를 들어 위의 식에서 상위 3개의 값만 가져와야 할 경우 `limit(3)`를 끼워넣기만 하면 된다.
-                    </aside>
+
+                            자바에서는 스트림을 제어할 수 있는 다양한 기본함수들을 제공하고 있다. 이를 조립함으로써 다양한 기능을 유연하게 변경할 수 있다. 예를 들어 위의 식에서 상위 3개의 값만 가져와야 할 경우 `limit(3)`를 끼워넣기만 하면 된다.자바에서는 스트림을 제어할 수 있는 다양한 기본함수들을 제공하고 있다. 이를 조립함으로써 다양한 기능을 유연하게 변경할 수 있다. 예를 들어 위의 식에서 상위 3개의 값만 가져와야 할 경우 `limit(3)`를 끼워넣기만 하면 된다.
+                        </aside>
                     </section>
                     <section>
                         <h2>병렬화</h2>
@@ -153,6 +172,17 @@ SELECT *
                         <div>
                             <b>데이터 처리연산</b>을 지원하는 <b>소스</b>에서 추출된 <b>연속된 요소</b>
                         </div>
+                    </section>
+                    <section>
+                        <h2>데이터 처리 연산</h2>
+                        <br>
+                        <div>
+                            스트림은 filter, map, reduce, find, match등의 함수가 제공.<br>
+                            스트림연산은 순차적으로 또는 병렬로 실행
+                        </div>
+                        <aside class="notes">
+                            스트림은 함수형 프로그래밍 언어에서 일반적으로 지원하는 연산과 데이터베이스와 비슷한 연산을 지원한다. filter, map, reduce, find, match등으로 데이터를 조작할 수 있다. 스트림연산은 순차적으로 또는 병렬로 실행할 수 있다.
+                        </aside>
                     </section>
                     <section>
                         <h2>연속된 요소</h2>
@@ -186,20 +216,9 @@ SELECT *
                         <h2>소스</h2>
                         <br>
                         <div>
-                            스트림은 컬렉션, 배열, I/O 자원등의 데이터 제공<br>
-                            소스로부터 데이터를 소비한다.
+                            스트림은 컬렉션, 배열, I/O 자원등의 데이터를 제공받으며<br>
+                            받은 데이터는 스트림을 통해서 소비된다.
                         </div>
-                    </section>
-                    <section>
-                        <h2>데이터 처리 연산</h2>
-                        <br>
-                        <div>
-                            스트림은 filter, map, reduce, find, match등의 함수가 제공.<br>
-                            스트림연산은 순차적으로 또는 병렬로 실행
-                        </div>
-                        <aside class="notes">
-                            스트림은 함수형 프로그래밍 언어에서 일반적으로 지원하는 연산과 데이터베이스와 비슷한 연산을 지원한다. filter, map, reduce, find, match등으로 데이터를 조작할 수 있다. 스트림연산은 순차적으로 또는 병렬로 실행할 수 있다.
-                        </aside>
                     </section>
                     <section>
                         <h2>파이프라이닝</h2>
@@ -275,7 +294,7 @@ List&lt;String&gt; lowCaloricDishesName = menu
         .collect(toList());
                         </code></pre>
                         <ul>
-                            <li>filter, map, limit는 파이프라인을 형성</li>
+                            <li>filter, sorted, limit는 파이프라인을 형성</li>
                             <li>collect는 파이프라인을 실행한 다음에 닫는다.</li>
                         </ul>
                     </section>

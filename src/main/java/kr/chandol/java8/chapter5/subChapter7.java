@@ -16,22 +16,23 @@ public class subChapter7 {
     @Test
     public void 배열로스트림만들기() {
 
-int[] numbers = {2,3,5,7,11};
-int sum = Arrays.stream(numbers).sum();
+        int[] numbers = {2, 3, 5, 7, 11};
+        int sum = Arrays.stream(numbers).sum();
 
     }
 
     @Test
     public void iterator() {
-Stream.iterate(0, n -> n + 2)
-        .limit(10)
-        .forEach(System.out::println);
+        Stream.iterate(0, n -> n + 2)
+                .limit(10)
+                .forEach(System.out::println);
     }
+
     @Test
     public void generator() {
-Stream.generate(Math::random)
-        .limit(10)
-        .forEach(System.out::println);
+        Stream.generate(Math::random)
+                .limit(10)
+                .forEach(System.out::println);
     }
 
 }

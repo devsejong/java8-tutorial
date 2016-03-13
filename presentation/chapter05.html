@@ -172,7 +172,7 @@ menu.stream()
                 </div>
                 <pre><code class="hljs" data-trim>
 menu.stream()
-    .filter(d -> d.getCalories() > 200)
+    .filter(d -> d.getCalories() >= 200)
     .allMatch(Dish::isVegetarian);
                 </code></pre>
                 <img src="asset/chapter05/noneMatch.png" height="400px">
@@ -224,8 +224,8 @@ Optinal&lt;Integer&gt; sum = numbers
                 <h3>reduce [최댓값, 최솟값]</h3>
                 <pre><code class="hljs" data-trim>
 List&lt;Integer&gt; numbers = Arrays.asList(3, 2, 6, 4, 2);
-Integer max = numbers
-        .stream().reduce(Integer::max);
+Optional&lt;Integer&gt; max = numbers
+            .stream().reduce(Integer::max);
                 </code></pre>
                 <img src="asset/chapter05/max.png" height="400px">
             </section>
