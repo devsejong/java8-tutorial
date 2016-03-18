@@ -2,9 +2,7 @@ package kr.chandol.java8.chapter5;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 // 리듀싱
 public class subChapter4 {

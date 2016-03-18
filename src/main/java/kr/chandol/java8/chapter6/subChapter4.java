@@ -18,6 +18,8 @@ public class subChapter4 {
 
         System.out.println(partitionedMenu);
 
+        // {false={FISH=[prawns, salmon], MEAT=[pork, beef, chicken]},
+        // true={OTHER=[french fries, rice, season fruit, pizza]}}
         Map<Boolean, Map<Dish.Type, List<Dish>>> patitionedAndGroupDishes = Dish.menu.
                 stream().collect(
                 Collectors.partitioningBy(
@@ -25,6 +27,8 @@ public class subChapter4 {
                         Collectors.groupingBy(Dish::getType)
                 )
         );
+
+        System.out.println(patitionedAndGroupDishes);
     }
 
 

@@ -18,8 +18,7 @@ Stream<Integer> stream = intStream.boxed();
     @Test
     public void rangeClosed() {
 IntStream evenNumbers = IntStream
-        .rangeClosed(1, 100)
-        .filter(n -> n % 2 == 0);
+        .rangeClosed(1, 100);
     }
 
 }
