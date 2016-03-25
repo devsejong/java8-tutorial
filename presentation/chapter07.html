@@ -67,7 +67,8 @@ public static long parallelSum(long n) {
             </code></pre>
             <div>
                 <b>parallel</b>을 stream에 추가하여 리듀싱 연산을<br>
-                여러 청크로 변환 및 병렬로 수행할 수 있다.
+                여러 청크로 변환 및 병렬로 수행할 수 있다.<br>
+                반대로 <b>sequencial</b>를 호출. 순차적인 스트림으로도 변경이 가능하다.
             </div>
         </section>
 
@@ -79,16 +80,15 @@ public static long parallelSum(long n) {
             <section>
                 <h3>병렬스트림 처리 과정</h3>
                 <ol>
-                    <li>데이터를 여러개의 청크로 분리한다.</li>
                     <li>스레드를 초기화한다.</li>
-                    <li>각 스레드에 청크를 할당하고 계산한다.</li>
+                    <li>데이터를 여러개의 청크로 분리한다.</li>
+                    <li>각 스레드에 청크를 할당 및 계산한다.</li>
                     <li>결과를 하나로 병합한다.</li>
                 </ol>
             </section>
             <section>
                 <h3>스트림 vs OLD for-loop</h3>
-                <pre><code class="hljs">
-// lambda로 작성한 코드
+                <pre><code class="hljs">// lambda로 작성한 코드
 // 101ms
 public static long sequentialSum(long n) {
     return Stream.iterate(1L, i -> i + 1)
@@ -107,7 +107,10 @@ public static long iterativeSum(long n) {
 }
                 </code></pre>
 
-                <div>1부터 10,000,000까지 값을 더하는 위의 로직은 고전적인 for-loop방식이 훨씬 빠르다.</div>
+                <div>
+                    1부터 10,000,000까지 값을 더하는 위의 로직은<br>
+                    오히려 고전적인 for-loop방식이 훨씬 빠르다.
+                </div>
             </section>
             <section>
                 <h3>병렬 스트림</h3>
@@ -120,15 +123,16 @@ public static long parallelSum(long n) {
                     .parallel()
                     .reduce(Long::sum)
                     .get();
+}
                 </code></pre>
                 <div>병렬 스트림으로 실행하였을 경우 오히려 낮은 성능을 보인다.</div>
                 <ul style="font-size:0.8em">
                     <li>iterate가 박싱된 객체를 생성하므로 이를 다시 언박싱하는 과정이 필요하다.</li>
-                    <li>iterate는 병렬로 실행될 수 있도록 독립적인 청크로 분할하기는 어렵다.</li>
+                    <li>iterate는 독립적인 청크로 분할하기는 어렵기 때문에 병렬로 실행되지 않는다.</li>
                 </ul>
             </section>
             <section>
-                <h3>LongStream으로 성능 개선하기</h3>
+                <h3>LongStream + 고정크기로 성능 개선하기</h3>
                 <div>
                     LongStream.rangeClosed를 사용하자.
                 </div>
@@ -166,19 +170,44 @@ public static long parallelRangedSum(long n) {
             <section>
                 <h3>병렬 스트림을 쓰고 싶어요!</h3>
                 <ul>
-                    <li>확신이 서지 않는다면 직접 측정하라. 병렬스트림은 항상 순차스트림보다 빠르지 않다.  </li>
-                    <li>박싱을 주의하라. 자동박싱과 언박싱과정은 성능을 크게 저하시킨다. 이 경우 자바에서 제공하는 기본형 특화 스트림을 사용하는 것이 좋다.</li>
-                    <li>순차스트림보다 병렬스트림에서 성능이 떨어지는 연산이 존재한다. limit나 findFirst 처럼 요소의 순서에 의존하는 연산을 병렬 스트림에서 수행하려면 비싼 비용이 필요하다.</li>
-                    <li>소량의 데이터라면 병렬스트림이 도움되지는 않는다. 소량의 데이터를 처리하는 과정에서 병렬화과정에서 생기는 부가비용을 상쇄할 수 있을만큼 이득을 얻지 못하기 때문이다.</li>
+                    <li>측정하라. 병렬스트림은 항상 순차스트림보다 빠르지 않다.</li>
+                    <li>박싱을 주의하라. 자동박싱과 언박싱과정은 성능을 크게 저하시킨다. 자바에서 제공하는 기본형 특화 스트림을 사용하는 것이 좋다.</li>
+                    <li>순차스트림보다 병렬스트림에서 성능이 떨어지는 연산이 존재한다.<br>
+                        limit나 findFirst 처럼 요소의 순서에 의존하는 연산을 병렬 스트림에서 수행하려면 비싼 비용이 필요하다.</li>
+                    <li>소량의 데이터라면 병렬스트림이 도움되지는 않는다.<br>
+                        소량의 데이터를 처리하는 과정에서 병렬화과정에서 생기는 부가비용을 상쇄할 수 있을만큼 이득을 얻지 못하기 때문이다.</li>
                 </ul>
             </section>
             <section>
                 <h3>병렬 스트림을 쓰고 싶어요!</h3>
                 <ul>
-                    <li>스트림을 구성하는 자료구조가 적절한지 확인하여라. ArrayList는 LinkedList보다 효율적으로 분리가 가능하다.</li>
+                    <li>스트림을 구성하는 자료구조가 적절한지 확인하여라.<br>ArrayList는 LinkedList보다 효율적으로 분리가 가능하다.</li>
                     <li>스트림의 특성과 파이프라인의 중간연산이 스트림의 특성을 어떻게 바꾸느냐에 따라서 분해과정의 성능이 달라질 수 있다. 필터연산이 있을 경우 크기를 예측할 수 없으므로 효과적인 스트림 처리가 쉽지 않다.</li>
-                    <li>최종연산과정에서 병합비용을 살펴보아라. 병합비용이 비싸다면 병렬스트림으로 얻은 성능의 이익이 서브스트림의 부분결과를 합치는 과정에서 상쇄될 수 있다.</li>
+                    <li>최종연산과정에서 병합비용을 살펴보아라.<br>병합비용이 비싸다면 병렬스트림으로 얻은 성능의 이익이 서브스트림의 부분결과를 합치는 과정에서 상쇄될 수 있다.</li>
                 </ul>
+            </section>
+            <section>
+                <h3>아래와 같이 사용하면 안되요</h3>
+                <div>
+                    병렬 프로그래밍에서 공유변수가 있을 .경우 부작용을 일으킬 수 있다
+                </div>
+                <pre><code class="hljs">
+public static long sideEffectParallelSum(long n) {
+    Accumulator accumulator = new Accumulator();
+    LongStream.rangeClosed(1, n).parallel().forEach(accumulator::add);
+    return accumulator.total;
+}
+
+public static class Accumulator {
+    private long total = 0;
+
+    public void add(long value) {
+        total += value;
+    }
+}
+
+sideEffectParallelSum(10_000_000);
+                </code></pre>
             </section>
         </section>
 
@@ -186,8 +215,8 @@ public static long parallelRangedSum(long n) {
             <section>
                 <h2>포크/조인 프레임워크</h2>
                 <div>
-                    작업을 재귀적으로 작은작업으로 분할한 다음<br>
-                    각 서브테스크들의 결과를 합쳐서 최종결과를 내놓는다.<br>
+                    작업을 재귀적으로 작은 작업들로 분할한 다음<br>
+                    각 작은 작업들의 결과를 병합하여 값을 찾는다.<br>
                 </div>
                 <img src="asset/chapter07/forkjoin.png">
             </section>
@@ -195,7 +224,7 @@ public static long parallelRangedSum(long n) {
                 <h2>포크/조인 프레임워크</h2>
                 <div>pseudocode로 나타낸 알고리즘</div>
                 <pre><code class="hljs">
-        if(태스크가 충분히 작거나 더이상 분할할 수 없으면){
+        if(태스크가 충분히 작거나 더이상 분할할 수 없으면) {
             순차적으로 태스크 계산
         } else {
             태스트를 두 서브 태스크로 분할
@@ -221,17 +250,20 @@ public static long parallelRangedSum(long n) {
         <section>
             <section>
                 <h2>Spliterator Interface</h2>
-                <div>
-                    분할할 수 있는 반복자<br>
-                    병렬작업에 특화, 구현된 로직에 따라서 스트림의 청크를 분리<br>
-                    자바의 모든 자료구조에 기본적인 Spliterator를 제공
-                </div>
+                <ul>
+                    <li>분할할 수 있는 반복자(Split + Iterator의 조합어)</li>
+                    <li>병렬작업에 특화<br>
+                    <li>구현된 로직에 따라서 스트림의 청크를 분리<br>
+                    <li>자바의 모든 자료구조에 기본적인 Spliterator가 들어가 있음
+                    <ul>
+                        <li style="font-size: 0.8em;">활용도 낮음. 이런게 있다 정도만 하고 넘어가자</li>
+                    </ul>
+                </ul>
             </section>
             <section>
                 <h3>interface 구성</h3>
                 <pre><code class="hljs">
 public interface Spliterator&lt;T&gt; {
-
     boolean tryAdvance(Consumer&lt;? super T&gt; action);
 
     Spliterator&lt;T&gt; trySplit();
@@ -241,16 +273,32 @@ public interface Spliterator&lt;T&gt; {
     int characteristics();
 }
                 </code></pre>
-                <div>
-                    T는 `Spliterator`에서 탐색하는 요소의 형식을 나타낸다.<br>
-                    tryAdvance 메서드는 `Spliterator`는 순차적으로 요소를 소비하면서 탐색할 요소가 남아있으면 true을 반환한다.<br>
-                    trySplit 메서드는 Spliterator의 일부요소를 분할하여 두번째 Spliterator를 생성하는 메서드이다.<br>
-                    estimateSize는 제공되는 값이 정확하지 않더라도 제공된 값을 통해서 더 쉽고 공평하게 Spliterator를 분할할 수 있다.
-                </div>
+                <ul style="font-size: 0.8em;">
+                    <li>T는 `Spliterator`에서 탐색할 요소의 타입</li>
+                    <li>tryAdvance : `Spliterator`는 탐색할 요소가 남아있으면 true을 반환</li>
+                    <li>trySplit : Spliterator의 일부요소를 분할 두번째 Spliterator를 생성</li>
+                    <li>estimateSize : 남아있는 요소가 몇개인지를 알려주는 메서드</li>
+                </ul>
             </section>
             <section>
                 <h3>characteristics</h3>
                 <img src="asset/chapter07/characteristics.png">
+            </section>
+            <section>
+                <h3>Spliterator 구현해보기</h3>
+                <div>아래와 같이 주어진 문자열의 단어갯수 세기</div>
+                <pre><code class="hljs">
+public String SENTENCE =
+        "Lorem ipsum dolor sit amet consectetur adipiscing elit";
+                </code></pre>
+                <div>병렬로 자른다면 다음과 같이 하나의 단어로 쪼개져 청크가 생성될 수 있으므로 심각한 문제를 일으킬 수 있다.</div>
+                <pre><code class="hljs">
+String chunk1 = "Lorem ipsum do"; // dolor가 둘로 쪼개짐
+String chunk2 = "lor sit amet";
+String chunk3 = "consectetur adi"; // adipiscing가 둘로 쪼개짐
+String chunk4 = "piscing elit";
+                </code></pre>
+                <div>이러한 경우 spliterator를 사용하여 청크로 나누어야 한다.</div>
             </section>
             <section>
                 <h3>Spliterator 구현해보기</h3>
@@ -300,13 +348,22 @@ private static class WordCounterSpliterator implements Spliterator&lt;Character&
 }
                 </code></pre>
             </section>
+
+            <section>
+                <h3>사용법</h3>
+                <div>stream을 StreamSupport를 사용해 만들 수 있다.</div>
+                <pre><code class="hljs">
+Spliterator&lt;Character&gt; spliterator = new WordCounterSpliterator(str);
+Stream&lt;Character&gt; stream = StreamSupport.stream(spliterator, true);
+                </code></pre>
+            </section>
         </section>
 
 
         <section style="text-align: left;">
             <h1>THE END</h1>
             <p>
-                - <a href="https://github.com/devsejong/java8-tutorial/tree/master/src/main/java/kr/chandol/java8/chapter6">Github
+                - <a href="https://github.com/devsejong/java8-tutorial/tree/master/src/main/java/kr/chandol/java8/chapter7">Github
                 예제코드</a>
                 <br>
                 - <a href="">7장요약본</a>
@@ -317,7 +374,6 @@ private static class WordCounterSpliterator implements Spliterator&lt;Character&
 </div>
 <script type="text/plain">
             <pre><code class="hljs" data-trim></code></pre>
-
 </script>
 
 <script src="reveal/lib/js/head.min.js"></script>

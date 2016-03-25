@@ -7,6 +7,8 @@ import java.util.IntSummaryStatistics;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.maxBy;
+
 public class subChapter2 {
 
     @Test
@@ -16,7 +18,7 @@ public class subChapter2 {
 
         Optional<Dish> mostCalorieDish =
                 Dish.menu.stream()
-                        .collect(Collectors.maxBy(dishCaloriesComparator));
+                        .collect(maxBy(dishCaloriesComparator));
     }
 
     @Test

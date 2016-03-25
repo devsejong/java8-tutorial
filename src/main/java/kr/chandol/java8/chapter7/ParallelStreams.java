@@ -47,4 +47,9 @@ public class ParallelStreams {
             total += value;
         }
     }
+
+    public static void main(String[] args){
+        System.out.println(sideEffectSum(1_000_000));
+        System.out.println(sideEffectParallelSum(1_000_000));
+    }
 }
