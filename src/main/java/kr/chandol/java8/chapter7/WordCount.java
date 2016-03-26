@@ -1,8 +1,9 @@
 package kr.chandol.java8.chapter7;
 
-import java.util.*;
-import java.util.function.*;
-import java.util.stream.*;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class WordCount {
 
@@ -12,7 +13,7 @@ public class WordCount {
             " che la  dritta via era   smarrita ";
 
     public static void main(String[] args) {
-        System.out.println("Found " + countWordsIteratively(SENTENCE) + " words");
+        //System.out.println("Found " + countWordsIteratively(SENTENCE) + " words");
         System.out.println("Found " + countWords(SENTENCE) + " words");
     }
 
