@@ -36,14 +36,12 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
     @Override
     public Set<Characteristics> characteristics() {
         return Collections.unmodifiableSet(
-                EnumSet.of(Characteristics.IDENTITY_FINISH)
+                EnumSet.of(Characteristics.CONCURRENT)
         );
     }
 
     public static void main(String[] args){
-        List<Long> collect = LongStream
-                .rangeClosed(0, 5)
-                .parallel()
+        List<Long> collect = LongStream.rangeClosed(0, 5)
                 .boxed()
                 .collect(new ToListCollector<Long>());
 

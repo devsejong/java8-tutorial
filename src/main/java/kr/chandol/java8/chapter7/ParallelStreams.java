@@ -1,5 +1,6 @@
 package kr.chandol.java8.chapter7;
 
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.*;
 
 public class ParallelStreams {
@@ -31,20 +32,20 @@ public class ParallelStreams {
     public static long sideEffectSum(long n) {
         Accumulator accumulator = new Accumulator();
         LongStream.rangeClosed(1, n).forEach(accumulator::add);
-        return accumulator.total;
+        return accumulator.total.get();
     }
 
     public static long sideEffectParallelSum(long n) {
         Accumulator accumulator = new Accumulator();
         LongStream.rangeClosed(1, n).parallel().forEach(accumulator::add);
-        return accumulator.total;
+        return accumulator.total.get();
     }
 
     public static class Accumulator {
-        private long total = 0;
+        private AtomicLong total = new AtomicLong();
 
         public void add(long value) {
-            total += value;
+            total.addAndGet(value);
         }
     }
 
