@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>자바8인액션 7장</title>
+
+    <meta name="author" content="SejongPark">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'reveal/css/print/pdf.css' : 'reveal/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h1>자바8인액션</h1>
+            <h3>8장 - 리팩토링, 테스팅, 디버깅</h3>
+            <p>
+                <small>Created by <a href="http://chandol.net">SejongPark</a> /
+                    <a href="https://github.com/devsejong">github</a></small>
+            </p>
+        </section>
+
+        <section>
+            <section>
+                <h2>리팩토링</h2>
+                <p>
+                    코드의 가독성과 유연성을 높일 수 있다.<br>
+                    <b>"가독성이 좋다"</b><br>
+                    다시말해서 쉽게 이해할 수 있음을 이야기한다.
+                </p>
+                <hr>
+                <div>
+                    <p>자바8의 문법을 사용한다면??</p>
+                    <ul style="font-size: 0.8em">
+                        <li>코드의 장황함을 줄여서 쉽게 이해할 수 있는 코드를 구현할 수 있다.</li>
+                        <li>메서드 레퍼런스와 스트림 API를 이용해 코드의 의도를 쉽게 표현할 수 있다.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h3>리팩토링 - 익명 클래스를 람다로</h3>
+                <p>
+                    기존 코드에서 행위를 정의하기 위해서 별도의 익명클래스를 사용했다면, 람다를 활용할 경우 간결하게 표현해 줄 수 있다.
+                </p>
+                <pre><code class="hljs">
+Runnable r1 = new Runnable() {
+    @Override
+    public void run() {
+        System.out.println("Hello!");
+    }
+};
+
+Runnable r2 = () -&gt; System.out.println(&quot;Hello&quot;);
+                </code></pre>
+            </section>
+            <section>
+                <h3>리팩토링 - 익명 클래스를 람다로</h3>
+                <pre><code class="hljs">
+Runnable r1 = new Runnable() {
+    @Override
+    public void run() {
+        System.out.println(&quot;Hello!&quot;);
+    }
+};
+
+Runnable r2 = () -&gt; System.out.println(&quot;Hello&quot;);
+                </code></pre>
+                <ul style="font-size: 0.8em">
+                    <li>
+                        익명클래스에서 this와 super는 람다표현식에서 다른 의미를 가진다.<br>
+                        익명클래스에서는 자기 자신 클래스를 의미하지만, 람다에서는 람다를 감싸는 클래스를 의미한다.
+                    </li>
+                    <li>
+                        익명클래스는 감싸고있는 클래스의 변수를 가릴수 있지만,<br>
+                        스코프가 공유되는 람다는 변수를 가릴 수 없다.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>리팩토링 - 메서드 레퍼런스</h3>
+                <p>
+                    메서드 레퍼런스를 사용하여 가독성 있는 코드로 분리할 수 있다.
+                </p>
+                <pre><code class="hljs">
+menu.stream().collect(Collectors.groupingBy(dish -&gt; {
+    if(dish.getCalories() &lt;=400) return DIET;
+    else if(dish.getCalories() &lt;= 700) return NORMAL;
+    else return FAT;
+}));
+
+public void test(){
+    menu.stream().collect(
+        groupingBy(this::getCaloricLevel)
+    );
+}
+                </code></pre>
+            </section>
+            <section>
+                <h3>리팩토링 - 메서드 레퍼런스</h3>
+                <p>
+                    메서드 레퍼런스를 사용하여 가독성 있는 코드로 분리할 수 있다.
+                </p>
+                <pre><code class="hljs">
+public CaloricLevel getCaloricLevel(Dish dish){
+    if(dish.getCalories() &lt;=400) return DIET;
+    else if(dish.getCalories() &lt;= 700) return NORMAL;
+    else return FAT;
+}
+                </code></pre>
+            </section>
+            <section>
+                <h3></h3>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>패턴 개선하기</h2>
+                <p style="font-size:0.8em">
+                    메서드는 뼈대가 되는 클래스가 반드시 필요했었지만<br>
+                    람다와 메서드 레퍼런스를 사용한다면 동작을 바로 파라미터로 넘길 수 있다.<br>
+                </p>
+                <p  style="font-size:0.8em">
+                    디자인패턴도 행위들에 함수를 사용하여 가독성 높은 코드를 작성할 수 있다.
+                </p>
+            </section>
+            <section>
+                <h3>전략패턴</h3>
+                <pre><code class="hljs" style="font-size: 0.8em">interface ValidationStrategy {
+    boolean execute(String s);
+}
+
+class Validator {
+    private final ValidationStrategy strategy;
+    public Validator(ValidationStrategy v) {this.strategy = v;}
+    public boolean validate(String s) {return strategy.execute(s);}
+}</code></pre>
+                <pre><code class="hljs">
+Validator numericValidator = new Validator(new IsNumeric());
+boolean b1 = numericValidator.validate("aaaaaaaa");
+System.out.println(b1);
+
+Validator lowerCaseValidator = new Validator(new IsAllLowerCase());
+boolean b2 = lowerCaseValidator.validate("bbbbb");
+System.out.println(b2);
+                </code></pre>
+            </section>
+            <section>
+                <h3>전략패턴</h3>
+                <pre><code class="hljs">
+Validator aa = new Validator((s) -&gt; s.matches(&quot;[a-z]+]&quot;));
+boolean b1 = aa.validate(&quot;aaaaaaaa&quot;);
+System.out.println(b1);
+
+Validator bb = new Validator((s) -&gt; s.matches(&quot;\\d+&quot;));
+boolean b2 = bb.validate(&quot;bbbbb&quot;);
+System.out.println(b2);
+                </code></pre>
+            </section>
+
+            <section>
+                <h3>템플릿 메서드 패턴</h3>
+                <pre><code class="hljs" style="font-size:0.8em">abstract class OnlineBanking {
+    public void processCustomer(int id) {
+        Customer c = new Customer();
+        makeCustomerHappy(c);
+    }
+    abstract void makeCustomerHappy(Customer c);
+}
+
+public static void main(String[] args) {
+    OnlineBanking onlineBanking = new OnlineBanking() {
+        @Override
+        void makeCustomerHappy(Customer c) {
+            System.out.println(&quot;Hello &quot; + c);
+        }
+    };
+    onlineBanking.makeCustomerHappy(dummyCustomer);
+}
+                </code></pre>
+            </section>
+            <section>
+                <h3>템플릿 메서드 패턴</h3>
+                <pre><code class="hljs">
+class OnlineBanking {
+    public void processCustomer(int id, Consumer&lt;Customer&gt; makeCustomerHappy) {
+        Customer c = new Customer();
+        makeCustomerHappy.accept(c);
+    }
+}
+
+public static void main(String[] args) {
+    new OnlineBanking().processCustomer(0,
+            (c) -&gt; System.out.println(&quot;Hello&quot; + c)
+    );
+}
+                </code></pre>
+            </section>
+            <section>
+                <h3>옵저버 패턴</h3>
+                <pre><code class="hljs">
+Feed f = new Feed();
+f.registerObserver(new NYTimes());
+f.registerObserver(new Guardian());
+f.notifyObservers("The queen said her favourite book is Java 8 in Action!");
+                </code></pre>
+            </section>
+            <section>
+                <h3>옵저버 패턴</h3>
+                <pre><code class="hljs">
+Feed feedLambda = new Feed();
+
+feedLambda.registerObserver((String tweet) -&gt; {
+    if(tweet != null &amp;&amp; tweet.contains(&quot;money&quot;)){
+        System.out.println(&quot;Breaking news in NY! &quot; + tweet); }
+});
+feedLambda.registerObserver((String tweet) -&gt; {
+    if(tweet != null &amp;&amp; tweet.contains(&quot;queen&quot;)){
+        System.out.println(&quot;Yet another news in London... &quot; + tweet); }
+});
+
+feedLambda.notifyObservers(&quot;Money money money, give me money!&quot;);
+                </code></pre>
+            </section>
+        </section>
+
+        <section style="text-align: left;">
+            <h1>THE END</h1>
+            <p>
+                - <a href="https://github.com/devsejong/java8-tutorial/tree/master/src/main/java/kr/chandol/java8/chapter7">Github
+                예제코드</a>
+                <br>
+                - <a href="">7장요약본</a>
+            </p>
+        </section>
+    </div>
+
+</div>
+<script type="text/plain">
+            <pre><code class="hljs" data-trim></code></pre>
+</script>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'reveal/plugin/markdown/marked.js',
+                condition: function () {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            },
+            {
+                src: 'reveal/plugin/markdown/markdown.js',
+                condition: function () {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            },
+            {
+                src: 'reveal/plugin/highlight/highlight.js',
+                async: true,
+                callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            },
+            {src: 'reveal/plugin/zoom-js/zoom.js', async: true},
+            {src: 'reveal/plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>

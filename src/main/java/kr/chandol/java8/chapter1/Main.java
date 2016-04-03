@@ -12,18 +12,18 @@ public class Main {
     public static void main(String[] args) {
         List<Apple> inventory = new ArrayList<Apple>();
 
-        Collections.sort(inventory, new Comparator<Apple>() {
-            @Override
-            public int compare(Apple o1, Apple o2) {
-                return Integer.compare(o1.getWeight(), o2.getWeight());
-            }
-        });
+Collections.sort(inventory, new Comparator<Apple>() {
+    @Override
+    public int compare(Apple o1, Apple o2) {
+        return Integer.compare(o1.getWeight(), o2.getWeight());
+    }
+});
 
 
-        Collections.sort(
-                inventory,
-                (o1, o2) -> compare(o1.getWeight(), o2.getWeight())
-        );
+Collections.sort(
+        inventory,
+        (o1, o2) -> compare(o1.getWeight(), o2.getWeight())
+);
 
 
         inventory.sort((o1, o2) -> compare(o1.getWeight(), o2.getWeight()));

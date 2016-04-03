@@ -163,7 +163,7 @@ public class subChapter2 {
             f.notifyObservers("The queen said her favourite book is Java 8 in Action!");
 
             Feed feedLambda = new Feed();
-            
+
             feedLambda.registerObserver((String tweet) -> {
                 if (tweet != null && tweet.contains("money")) {
                     System.out.println("Breaking news in NY! " + tweet);
