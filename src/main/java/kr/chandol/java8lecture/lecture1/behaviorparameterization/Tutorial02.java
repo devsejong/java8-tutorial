@@ -38,7 +38,7 @@ public class Tutorial02 {
 
     @Test
     public void tutorialRunner() {
-        List<Apple> inventory = new ArrayList<>();
+        List<Apple> inventory = Apple.dummies();
         filterApples(inventory, new AppleColorPredicate());
     }
 }

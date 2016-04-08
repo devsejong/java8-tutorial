@@ -23,10 +23,10 @@ public class Tutorial03 {
 
     @Test
     public void tutorialRunner() {
-        List<Apple> inventory = new ArrayList<>();
+        List<Apple> inventory = Apple.dummies();
 
         // 익명 클래스 사용하기
-        filterApples(inventory,
+        List<Apple> apples1 = filterApples(inventory,
                 new ApplePredicate() {
                     @Override
                     public boolean test(Apple apple) {
@@ -34,15 +34,20 @@ public class Tutorial03 {
                     }
                 }
         );
+        System.out.println(apples1);
 
         // 람다 표현식 사용하기
-        filterApples(
-                inventory,
+        List<Apple> apples2 = filterApples(inventory,
                 (Apple apple) -> "red".equals(apple.getColor())
         );
+        System.out.println(apples2);
 
-        filterApples(inventory, (Apple apple) -> 150 > apple.getWeight());
+        List<Apple> apples3 = filterApples(inventory,
+                (Apple apple) -> 150 > apple.getWeight()
+        );
+        System.out.println(apples3);
     }
+
 }
 
 

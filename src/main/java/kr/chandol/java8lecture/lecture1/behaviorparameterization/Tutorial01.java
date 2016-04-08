@@ -5,14 +5,16 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.out;
+
 public class Tutorial01 {
 
     public List<Apple> filterGreenApples(List<Apple> inventory) {
         List<Apple> result = new ArrayList<>();
+
         for (Apple apple : inventory) {
-            if ("green".equals(apple.getColor())) {
+            if ("green".equals(apple.getColor()))
                 result.add(apple);
-            }
         }
         return result;
     }
@@ -43,11 +45,11 @@ public class Tutorial01 {
     @Test
     public void tutorialRunner() {
         Tutorial01 tutorial01 = new Tutorial01();
-        List<Apple> inventory = new ArrayList<>();
+        List<Apple> inventory = Apple.dummies();
 
-        tutorial01.filterGreenApples(inventory);
-
-        tutorial01.filterApplesByColor(inventory, "green");
-        tutorial01.filterApplesByColor(inventory, "red");
+        out.println(tutorial01.filterGreenApples(inventory));
+        out.println(tutorial01.filterApplesByColor(inventory, "green"));
+        out.println(tutorial01.filterApplesByColor(inventory, "red"));
+        out.println(tutorial01.filterApplesByWeight(inventory, 130));
     }
 }
