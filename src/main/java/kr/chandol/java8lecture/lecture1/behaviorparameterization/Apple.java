@@ -34,15 +34,13 @@ public class Apple {
     }
 
     static List<Apple> dummies() {
-        return new ArrayList<>(
-                asList(
-                        new Apple(160, "green"),
-                        new Apple(140, "green"),
-                        new Apple(130, "green"),
-                        new Apple(160, "red"),
-                        new Apple(140, "red")
-                )
-        );
+        return new ArrayList<>(asList(
+                new Apple(160, "green"),
+                new Apple(140, "green"),
+                new Apple(130, "green"),
+                new Apple(160, "red"),
+                new Apple(140, "red")
+        ));
     }
 
     @Override
