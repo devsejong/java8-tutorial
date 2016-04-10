@@ -103,7 +103,10 @@ public class subChapter2 {
         }
 
         static class OnlineBanking {
-            public void processCustomer(int id, Consumer<Customer> makeCustomerHappy) {
+            public void processCustomer(
+                    int id,
+                    Consumer<Customer> makeCustomerHappy
+            ) {
                 Customer c = new Customer();
                 makeCustomerHappy.accept(c);
             }

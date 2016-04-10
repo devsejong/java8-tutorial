@@ -51,7 +51,7 @@
                 <p>
                     코드의 가독성과 유연성을 높일 수 있다.<br>
                     <b>"가독성이 좋다"</b><br>
-                    다시말해서 쉽게 이해할 수 있음을 이야기한다.
+                    다시말해서 쉽게 이해할 수 있도록 만듦을 이야기한다.
                 </p>
                 <hr>
                 <div>
@@ -61,6 +61,14 @@
                         <li>메서드 레퍼런스와 스트림 API를 이용해 코드의 의도를 쉽게 표현할 수 있다.</li>
                     </ul>
                 </div>
+            </section>
+
+            <section>
+
+                <h3>
+                    내 언어의 한계는 내 세계의 한계를 의미한다.
+                </h3>
+                <p>비트겐슈타인</p>
             </section>
 
             <section>
@@ -91,6 +99,7 @@ Runnable r1 = new Runnable() {
 
 Runnable r2 = () -&gt; System.out.println(&quot;Hello&quot;);
                 </code></pre>
+                <p>주의할 점</p>
                 <ul style="font-size: 0.8em">
                     <li>
                         익명클래스에서 this와 super는 람다표현식에서 다른 의미를 가진다.<br>
@@ -113,12 +122,6 @@ menu.stream().collect(Collectors.groupingBy(dish -&gt; {
     else if(dish.getCalories() &lt;= 700) return NORMAL;
     else return FAT;
 }));
-
-public void test(){
-    menu.stream().collect(
-        groupingBy(this::getCaloricLevel)
-    );
-}
                 </code></pre>
             </section>
             <section>
@@ -127,15 +130,49 @@ public void test(){
                     메서드 레퍼런스를 사용하여 가독성 있는 코드로 분리할 수 있다.
                 </p>
                 <pre><code class="hljs">
+// 메서드 분리
 public CaloricLevel getCaloricLevel(Dish dish){
-    if(dish.getCalories() &lt;=400) return DIET;
-    else if(dish.getCalories() &lt;= 700) return NORMAL;
+    if(dish.getCalories() <=400) return DIET;
+    else if(dish.getCalories() <= 700) return NORMAL;
     else return FAT;
 }
+
+menu.stream().collect(
+    Collectors.groupingBy(this::getCaloricLevel)
+);
                 </code></pre>
             </section>
             <section>
-                <h3></h3>
+                <h3>리팩토링 - 조건부실행연기</h3>
+                <p>람다를 사용하면, 코드가 실행되는 시점을 늦출 수 있다.</p>
+                <pre><code class="hljs">
+//자바 클래식
+Logger logger = Logger.getLogger("test!!");
+if(logger.isLoggable(Level.FINE)){
+    logger.fine("메시지!!");
+}
+
+//자바8
+logger.fine(()->"메시지");
+                </code></pre>
+            </section>
+            <section>
+                <h3>리팩토링 - 조건부실행연기</h3>
+
+                <div>
+                    junit5<br>
+                    <img src="asset/chapter08/junit5.png">
+                </div>
+                <div>
+                    log4j2
+                    <img src="asset/chapter08/log4j2.png">
+                </div>
+                <div>
+                    <a href="https://github.com/qos-ch/slf4j/pull/70">
+                        https://github.com/qos-ch/slf4j/pull/70
+                    </a>
+                </div>
+
             </section>
         </section>
 
@@ -207,9 +244,11 @@ public static void main(String[] args) {
             </section>
             <section>
                 <h3>템플릿 메서드 패턴</h3>
-                <pre><code class="hljs">
-class OnlineBanking {
-    public void processCustomer(int id, Consumer&lt;Customer&gt; makeCustomerHappy) {
+                <pre><code class="hljs">class OnlineBanking {
+    public void processCustomer(
+        int id,
+        Consumer&lt;Customer&gt; makeCustomerHappy
+    ) {
         Customer c = new Customer();
         makeCustomerHappy.accept(c);
     }
@@ -228,7 +267,7 @@ public static void main(String[] args) {
 Feed f = new Feed();
 f.registerObserver(new NYTimes());
 f.registerObserver(new Guardian());
-f.notifyObservers("The queen said her favourite book is Java 8 in Action!");
+f.notifyObservers("The queen said her favourite language is java");
                 </code></pre>
             </section>
             <section>
@@ -237,12 +276,13 @@ f.notifyObservers("The queen said her favourite book is Java 8 in Action!");
 Feed feedLambda = new Feed();
 
 feedLambda.registerObserver((String tweet) -&gt; {
-    if(tweet != null &amp;&amp; tweet.contains(&quot;money&quot;)){
-        System.out.println(&quot;Breaking news in NY! &quot; + tweet); }
+    if(tweet != null &amp;&amp; tweet.contains(&quot;money&quot;))
+        System.out.println(&quot;Breaking news in NY! &quot; + tweet);
 });
+
 feedLambda.registerObserver((String tweet) -&gt; {
-    if(tweet != null &amp;&amp; tweet.contains(&quot;queen&quot;)){
-        System.out.println(&quot;Yet another news in London... &quot; + tweet); }
+    if(tweet != null &amp;&amp; tweet.contains(&quot;queen&quot;))
+        System.out.println(&quot;Yet another news in London! &quot; + tweet);
 });
 
 feedLambda.notifyObservers(&quot;Money money money, give me money!&quot;);
