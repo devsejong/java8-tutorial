@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>자바8인액션 13장</title>
+
+    <meta name="author" content="SejongPark">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'reveal/css/print/pdf.css' : 'reveal/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h1>자바8인액션</h1>
+            <h3>13장 - 함수형 관점으로 생각하기</h3>
+            <p>
+                <small>Created by <a href="http://chandol.net">SejongPark</a> /
+                    <a href="https://github.com/devsejong">github</a></small>
+            </p>
+        </section>
+
+        <section>
+            <p>맥북이 없어요....ㅠㅠ</p>
+            <img src="https://lh3.googleusercontent.com/Ws_geu7Y03cicki8vjUmiVjWMSx-_pK7FC9vu76pniEVJPC6wsAbKcPNFhkeNdxqHwxAZljih6nSduL5EB2aPY7VtR0izqti6wIPO7elyd3sCnnpY0WsOD2Iw6i6Ad0tc03Z0izJr0Lp6qWd8Uof3o3747MQ4LDHHS03IwRZ20uu4oe_djyNj1BzmEE-a0BcbN1_c890SMe4IVSTsDl39pubyYJuVVdN52sGId0vyyIe8m3fRf-ofpiRKGSkET2kFszfRftOvdjkePZL7u5CNEK7zNcpGai_-9IC5QiuukjRsA1z0qiiW-BLBthSf0LCozvvE38j-myz8zrrV08NrrPoVwsjSaxNqdqRctJXtL5Iit9GUDm7RudSjP75mWqSLfGBaG3eQqHg1Ymg0AgkWw_0BJYvRP-BtqkZdP_npoj4MqYHPC_9fuecsXO0j1L4t_x6rcDBTIL9tghNVyaJQZmqPkeDO0eiSeAxBi3P8MEU2awnfQAGx2EaY7wFs0GYCRU6mHvaz5ARsKzTFLsWD-r506KcFW9dIH0CmZRX0UNwa7gq9goXv3QrsGxa3uePro2cqg=w1098-h823-no">
+        </section>
+
+        <section>
+            <section>
+                <h3>공유 가변 데이터</h3>
+                <pre><code class="hljs">public void testAliasing() {
+    List numbers = Arrays.asList(1,2,3,4,5);
+    List anotherNumbers = numbers;
+
+    anotherNumbers.add(10);
+
+    assertThat(anotherNumbers.size(), is(6));
+    assertThat(numbers.size(), is(5));
+}
+                </code></pre>
+            </section>
+            <section>
+                <h3>공유 가변 데이터</h3>
+                <br>
+                <div style="text-align : left;">
+                <p>
+                    <b>별칭(aliasing) 문제</b><br><br>
+                    다른 참조를 통해 객체에 접근하는 쪽에서 내부 데이터가 변경될 가능성이 언제나 존재한다.<br>
+                    문제가 생길 경우 프로그램 전체에서 데이터 갱신 사실을 추적하는게 어려워진다.
+                </p>
+                </div>
+            </section>
+            <section>
+                <h3>공유 가변 데이터</h3>
+                <img src="http://imgs.xkcd.com/comics/watson_medical_algorithm.png" width="60%">
+            </section>
+            <section>
+                <h3>해결책 : 불변객체 사용하기</h3>
+                <br>
+                <p>
+                    전달되는 객체들을 변경이 불가능하도록<br>
+                    변수를 불변객체로 선언한다.
+                </p>
+                <ul>
+                    <li><a href="http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/collect/ImmutableList.html">
+                    Guava ImmutableList
+                    </a></li>
+                    <li><a href="https://github.com/facebook/immutable-js/#getting-started">
+                        immutable.js
+                    </a></li>
+                    <li><a href="https://projectlombok.org/features/Value.html">
+                        @Value at lombok
+                    </a></li>
+                </ul>
+
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>함수형 프로그래밍</h2>
+                <br>
+                <p style="font-size : 4em">
+                    <b>y = f(x)</b>
+                </p>
+            </section>
+            <section>
+                <h2>함수형 프로그래밍</h2>
+                <br>
+                <div style="text-align: left">
+                    <p>
+                        객체지향 프로그래밍 :<br>
+                        상태값을 캡슐화해 객체내부에 숨겨 부작용을 없앤다.
+                    </p>
+                    <p>
+                        함수형 프로그래밍 :<br>
+                        상태값을 지니지 않음으로써 부작용을 없앤다.
+                    </p>
+                </div>
+            </section>
+            <section>
+                <img src="asset/chapter13/methodVsFunction-m.png">
+            </section>
+            <section>
+                <img src="asset/chapter13/methodVsFunction-f.png">
+            </section>
+        </section>
+
+        <section style="text-align: left;">
+            <h1>THE END</h1>
+            <p>
+                끝!!
+            </p>
+        </section>
+    </div>
+
+</div>
+<script type="text/plain">
+            <pre><code class="hljs" data-trim></code></pre>
+</script>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'reveal/plugin/markdown/marked.js',
+                condition: function () {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            },
+            {
+                src: 'reveal/plugin/markdown/markdown.js',
+                condition: function () {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            },
+            {
+                src: 'reveal/plugin/highlight/highlight.js',
+                async: true,
+                callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            },
+            {src: 'reveal/plugin/zoom-js/zoom.js', async: true},
+            {src: 'reveal/plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
