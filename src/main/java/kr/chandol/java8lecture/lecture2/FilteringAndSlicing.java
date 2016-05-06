@@ -1,5 +1,6 @@
-package kr.chandol.java8inaction.chapter5;
+package kr.chandol.java8lecture.lecture2;
 
+import kr.chandol.java8inaction.chapter5.Dish;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -9,7 +10,8 @@ import static java.util.stream.Collectors.toList;
 import static kr.chandol.java8inaction.chapter5.Dish.menu;
 
 // 필터링과 슬라이싱
-public class subChapter1 {
+public class FilteringAndSlicing {
+
     @Test
     public void filter() {
         menu.stream()
@@ -27,22 +29,16 @@ public class subChapter1 {
 
     @Test
     public void list() {
-
         menu.stream()
                 .limit(3)
                 .collect(toList());
-
-
     }
 
     @Test
     public void skip() {
-
         menu.stream()
                 .filter(d -> d.getCalories() > 300)
                 .skip(2)
                 .collect(toList());
-
-
     }
 }

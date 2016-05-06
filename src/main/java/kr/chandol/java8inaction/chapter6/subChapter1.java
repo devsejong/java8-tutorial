@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 
 public class subChapter1 {
 
-public List<Transaction> transactions = Arrays.asList(
-        new Transaction(Currency.EUR, 1500.0),
-        new Transaction(Currency.USD, 2300.0),
-        new Transaction(Currency.EUR, 1100.0),
-        new Transaction(Currency.USD, 9900.0),
-        new Transaction(Currency.JPY, 7800.0),
-        new Transaction(Currency.JPY, 6700.0),
-        new Transaction(Currency.EUR, 5600.0)
+    public List<Transaction> transactions = Arrays.asList(
+            new Transaction(Currency.EUR, 1500.0),
+            new Transaction(Currency.USD, 2300.0),
+            new Transaction(Currency.EUR, 1100.0),
+            new Transaction(Currency.USD, 9900.0),
+            new Transaction(Currency.JPY, 7800.0),
+            new Transaction(Currency.JPY, 6700.0),
+            new Transaction(Currency.EUR, 5600.0)
     );
 
     @Test
@@ -36,9 +36,9 @@ public List<Transaction> transactions = Arrays.asList(
 
     @Test
     public void java8FunctionalStyle() {
-Map<Currency, List<Transaction>> transactionsByCurrencies = transactions
-        .stream()
-        .collect(Collectors.groupingBy(Transaction::getCurrency));
+        Map<Currency, List<Transaction>> transactionsByCurrencies = transactions
+                .stream()
+                .collect(Collectors.groupingBy(Transaction::getCurrency));
 
         System.out.println(transactionsByCurrencies);
     }

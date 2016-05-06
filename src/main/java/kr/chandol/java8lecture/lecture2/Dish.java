@@ -1,19 +1,27 @@
-package kr.chandol.java8inaction.chapter6;
+package kr.chandol.java8lecture.lecture2;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class Dish {
+    public enum Type {
+        MEAT, FISH, OTHER
+    }
 
-    private final String name;
-    private final boolean vegetarian;
-    private final int calories;
-    private final Type type;
+    private String name;
+    private int calories;
+    private boolean vegetarian;
+    private Type type;
 
     public Dish(String name, boolean vegetarian, int calories, Type type) {
-        this.name = name;
-        this.vegetarian = vegetarian;
         this.calories = calories;
+        this.vegetarian = vegetarian;
+        this.name = name;
         this.type = type;
+    }
+
+    public int getCalories() {
+        return calories;
     }
 
     public String getName() {
@@ -24,19 +32,8 @@ public class Dish {
         return vegetarian;
     }
 
-    public int getCalories() {
-        return calories;
-    }
-
     public Type getType() {
         return type;
-    }
-
-    public enum Type {MEAT, FISH, OTHER}
-
-    @Override
-    public String toString() {
-        return name;
     }
 
     public static final List<Dish> menu =
@@ -49,4 +46,14 @@ public class Dish {
                     new Dish("pizza", true, 550, Dish.Type.OTHER),
                     new Dish("prawns", false, 400, Dish.Type.FISH),
                     new Dish("salmon", false, 450, Dish.Type.FISH));
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "name='" + name + '\'' +
+                ", calories=" + calories +
+                ", vegetarian=" + vegetarian +
+                ", type=" + type +
+                '}';
+    }
 }

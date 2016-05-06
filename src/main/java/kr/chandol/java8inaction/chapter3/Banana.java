@@ -5,9 +5,10 @@ public class Banana {
     private String color;
     private String country;
 
-    public Banana(){}
+    public Banana() {
+    }
 
-    public Banana(int weight){
+    public Banana(int weight) {
         this.weight = weight;
     }
 

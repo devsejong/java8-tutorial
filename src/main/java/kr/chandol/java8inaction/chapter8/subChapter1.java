@@ -48,17 +48,17 @@ public class subChapter1 {
     }
 
     @Test
-    public void exam3(){
+    public void exam3() {
         // JUL
 
         //자바 클래식
         Logger logger = Logger.getLogger("test!!");
-        if(logger.isLoggable(Level.FINE)){
+        if (logger.isLoggable(Level.FINE)) {
             logger.fine("메시지!!");
         }
 
         //자바8
-        logger.fine(()->"메시지");
+        logger.fine(() -> "메시지");
     }
 
 }

@@ -71,7 +71,7 @@ public class subChapter6 {
                 = (apple, banana) -> apple.getWeight() + banana.getWeight();
 
         //UnaryOperator
-        UnaryOperator<Apple> unaryOperator = (apple)->{
+        UnaryOperator<Apple> unaryOperator = (apple) -> {
             apple.setWeight(100);
             return apple;
         };
@@ -86,9 +86,9 @@ public class subChapter6 {
 
     //약 140ms 소요
     @Test
-    public void wrapper_performanceTest(){
+    public void wrapper_performanceTest() {
         Integer[] integers = new Integer[1000000];
-        for(int i=0;i<1000000;i++){
+        for (int i = 0; i < 1000000; i++) {
             integers[i] = i;
         }
 
@@ -104,9 +104,9 @@ public class subChapter6 {
 
     //약 100ms 소요
     @Test
-    public void primitive_performanceTest(){
+    public void primitive_performanceTest() {
         int[] ints = new int[1000000];
-        for(int i=0;i<1000000;i++){
+        for (int i = 0; i < 1000000; i++) {
             ints[i] = i;
         }
 

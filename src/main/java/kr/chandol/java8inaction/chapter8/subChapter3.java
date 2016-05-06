@@ -32,8 +32,8 @@ public class subChapter3 {
             return new Point(this.x + x, this.y);
         }
 
-        public static List<Point> moveAllPointsRightBy(List<Point> points, int x){
-            return points.stream().map(p->new Point(p.getX() + x, p.getY())).collect(toList());
+        public static List<Point> moveAllPointsRightBy(List<Point> points, int x) {
+            return points.stream().map(p -> new Point(p.getX() + x, p.getY())).collect(toList());
         }
     }
 

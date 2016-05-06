@@ -6,18 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tutorial02 {
-    interface ApplePredicate{
+    interface ApplePredicate {
         boolean test(Apple apple);
     }
 
-    class AppleHeavyWeightPredicate implements ApplePredicate{
+    class AppleHeavyWeightPredicate implements ApplePredicate {
         @Override
         public boolean test(Apple apple) {
             return apple.getWeight() > 150;
         }
     }
 
-    class AppleColorPredicate implements ApplePredicate{
+    class AppleColorPredicate implements ApplePredicate {
         @Override
         public boolean test(Apple apple) {
             return "green".equals(apple.getColor());

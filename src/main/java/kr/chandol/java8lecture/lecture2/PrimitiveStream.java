@@ -1,5 +1,6 @@
-package kr.chandol.java8inaction.chapter5;
+package kr.chandol.java8lecture.lecture2;
 
+import kr.chandol.java8inaction.chapter5.Dish;
 import org.junit.Test;
 
 import java.util.stream.IntStream;
@@ -7,8 +8,8 @@ import java.util.stream.Stream;
 
 import static kr.chandol.java8inaction.chapter5.Dish.menu;
 
-// 필터링과 슬라이싱
-public class subChapter6 {
+// 박싱 언박싱
+public class PrimitiveStream {
     @Test
     public void toBoxedType() {
         IntStream intStream = menu.stream().mapToInt(Dish::getCalories);

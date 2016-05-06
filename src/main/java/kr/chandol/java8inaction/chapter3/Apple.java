@@ -5,9 +5,10 @@ public class Apple {
     private String color;
     private String country;
 
-    public Apple(){}
+    public Apple() {
+    }
 
-    public Apple(int weight){
+    public Apple(int weight) {
         this.weight = weight;
     }
 

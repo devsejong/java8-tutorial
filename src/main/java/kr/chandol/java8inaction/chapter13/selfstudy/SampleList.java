@@ -15,13 +15,13 @@ import static org.junit.Assert.assertThat;
  */
 public class SampleList {
 
-    public void aa(){
-List<Integer> numbers = Arrays.asList(1,2,3,4,5);
-List<Integer> anotherNumbers = numbers;
+    public void aa() {
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+        List<Integer> anotherNumbers = numbers;
 
-anotherNumbers.add(10);
+        anotherNumbers.add(10);
 
-assertThat(anotherNumbers.size(), is(6));
-assertThat(numbers.size(), is(5));
+        assertThat(anotherNumbers.size(), is(6));
+        assertThat(numbers.size(), is(5));
     }
 }

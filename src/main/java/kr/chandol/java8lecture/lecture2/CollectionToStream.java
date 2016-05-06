@@ -1,19 +1,17 @@
-package kr.chandol.java8inaction.chapter4;
+package kr.chandol.java8lecture.lecture2;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingInt;
+import static java.util.stream.Collectors.summarizingDouble;
 import static java.util.stream.Collectors.toList;
-import static kr.chandol.java8inaction.chapter4.Dish.menu;
+import static kr.chandol.java8lecture.lecture2.Dish.menu;
 
-public class subChapter1 {
-
-
+public class CollectionToStream {
     //자바7 스타일 컬렉션 조작
     @Test
     public void java7styleCollectionControl() {
@@ -21,7 +19,7 @@ public class subChapter1 {
 
         // 칼로리가 400이하인 메뉴만 가지고 온다.
         for (Dish d : menu) {
-            if (d.getCalories() < 500) {
+            if (d.getCalories() < 400) {
                 lowCaloricDishes.add(d);
             }
         }
@@ -40,13 +38,10 @@ public class subChapter1 {
             lowCaloricDishesName.add(d.getName());
         }
 
-        System.out.println(lowCaloricDishesName);
-
         // 상위 3개의 결과만 반환한다
-        List<String> lowCaloricLimit3DisishesName = lowCaloricDishesName.subList(0, 3);
+        List<String> lowCaloricLimit3DisishesName = lowCaloricDishesName.subList(0, 2);
 
         System.out.println(lowCaloricLimit3DisishesName);
-
     }
 
     @Test
@@ -62,15 +57,28 @@ public class subChapter1 {
     }
 
     @Test
-    public void java8parallelStream() {
-        List<String> lowCaloricDishesName = menu
-                .parallelStream()
-                .filter(d -> d.getCalories() < 400)
-                .sorted(comparing(Dish::getCalories))
-                .map(Dish::getName)
-                .collect(toList());
+    public void java8styleCollectionControl2() {
 
-        System.out.println(lowCaloricDishesName);
+        Map<String, List<Dish>> groupedMenu = menu.stream()
+                .collect(Collectors.groupingBy(d -> {
+                    if (d.getCalories() <= 300)
+                        return "diet";
+                    else
+                        return "normal";
+                }));
+
+        System.out.println(groupedMenu);
+
     }
 
+    @Test
+    public void java8styleCollectionControl3() {
+
+        Dish dish = menu.stream()
+                .max(comparingInt(Dish::getCalories))
+                .get();
+
+        System.out.println(dish);
+
+    }
 }

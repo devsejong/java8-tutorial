@@ -13,7 +13,7 @@ public class JUL_Sample {
     public static void main(String[] args) {
         logger.log(Level.FINER, "테스트입니다." + compute());
 
-        if(logger.isLoggable(Level.FINER)){
+        if (logger.isLoggable(Level.FINER)) {
             logger.log(Level.FINER, compute());
         }
         //logger.log(Level.FINER, () -> compute());

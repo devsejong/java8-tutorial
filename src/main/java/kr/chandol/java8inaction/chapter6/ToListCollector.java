@@ -40,7 +40,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
         );
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         List<Long> collect = LongStream.rangeClosed(0, 5)
                 .boxed()
                 .collect(new ToListCollector<Long>());

@@ -1,11 +1,13 @@
-package kr.chandol.java8inaction.chapter5;
+package kr.chandol.java8lecture.lecture2;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 // 리듀싱
-public class subChapter4 {
+public class Reducing {
 
     List<Integer> numbers = Arrays.asList(6, 2, 1, 4, 2, 6);
 

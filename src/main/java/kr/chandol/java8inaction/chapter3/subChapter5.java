@@ -8,7 +8,7 @@ import org.junit.Test;
 public class subChapter5 {
 
     @Test
-    public void test(){
+    public void test() {
         int portNumber = 1337;
         Runnable r = () -> System.out.println(portNumber);
         //아래의 주석을 지울경우 에러 발생.

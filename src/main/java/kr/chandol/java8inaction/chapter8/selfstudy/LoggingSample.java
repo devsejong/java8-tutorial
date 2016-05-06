@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class LoggingSample {
     private static final Logger logger = LoggerFactory.getLogger(LoggingSample.class);
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         // JUL보다는 slf4j를 사용합시닷!!
         logger.debug("it takes looooooooong time : {}", "test");
 

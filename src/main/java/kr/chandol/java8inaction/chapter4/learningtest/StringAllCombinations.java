@@ -68,14 +68,14 @@ public class StringAllCombinations {
                         .boxed()
                         .map(s -> Character.toString((char) (rangeLow + s)))
                         .collect(Collectors.toList())
-                    .stream()
+                        .stream()
                         .map(i -> i)
                         .reduce((a, b) -> a + b).get())
-                    .parallel()
-                        .collect(Collectors.toSet())
-                    .stream()
-                        .sorted()
-                        .forEach(System.out::println);
+                .parallel()
+                .collect(Collectors.toSet())
+                .stream()
+                .sorted()
+                .forEach(System.out::println);
 
         Date endDate = new Date();
         long totalTime = System.nanoTime() - startTime;
