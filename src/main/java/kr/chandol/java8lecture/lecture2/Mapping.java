@@ -14,9 +14,9 @@ import static kr.chandol.java8inaction.chapter5.Dish.menu;
 public class Mapping {
     @Test
     public void map() {
-        List<String> dishNames = menu.stream()
-                .map(Dish::getName)
-                .collect(toList());
+        menu.stream()
+                .map(Dish::getCalories)
+                .reduce((a, b) -> a + b);
     }
 
     @Test

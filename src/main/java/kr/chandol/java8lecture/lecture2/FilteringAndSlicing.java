@@ -21,7 +21,7 @@ public class FilteringAndSlicing {
 
     @Test
     public void distinct() {
-        List<Integer> numbers = Arrays.asList(1, 2, 1, 3, 3);
+        List<Integer> numbers = Arrays.asList(1, 1, 1, 2, 5);
         numbers.stream()
                 .distinct()
                 .forEach(System.out::println);
@@ -36,9 +36,10 @@ public class FilteringAndSlicing {
 
     @Test
     public void skip() {
+
         menu.stream()
-                .filter(d -> d.getCalories() > 300)
                 .skip(2)
                 .collect(toList());
+
     }
 }
