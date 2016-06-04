@@ -22,8 +22,8 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 
     @Override
     public Function<List<T>, List<T>> finisher() {
-        return Function.identity();
-        //return t -> t;
+        //return Function.identity();
+        return t -> t;
     }
 
     @Override
@@ -37,16 +37,31 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
     @Override
     public Set<Characteristics> characteristics() {
         return Collections.unmodifiableSet(
-                EnumSet.of(Characteristics.CONCURRENT)
+                EnumSet.of(Characteristics.CONCURRENT,
+                        Characteristics.IDENTITY_FINISH,
+                        Characteristics.UNORDERED
+                )
         );
     }
 
-
     public static void main(String[] args) {
-        List<Long> collect = LongStream.rangeClosed(0, 5)
+        List<Long> collect = LongStream.rangeClosed(10, 12)
                 .boxed()
-                .collect(new ToListCollector<Long>());
+                .parallel()
+                .collect(new ToListCollector<>());
 
         System.out.println(collect);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
